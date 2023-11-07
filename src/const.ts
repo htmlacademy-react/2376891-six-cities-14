@@ -1,10 +1,10 @@
-export const OFFERS_COUNT = 5;
+export const OFFER_IMAGES_COUNT = 6;
 
 export enum AppRoute {
-  Main = '/',
+  Root = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer/:id',
+  Offer = '/offer',
 }
 
 export enum AuthorizationStatus {
@@ -12,3 +12,11 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const Rating = {
+  '1': 'terribly',
+  '2': 'badly',
+  '3': 'not bad',
+  '4': 'good',
+  '5': 'perfect',
+};

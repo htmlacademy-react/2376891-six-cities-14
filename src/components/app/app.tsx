@@ -7,26 +7,27 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import ProtectedRoute from '../protected-route/protected-route';
+import { Offer } from '../../types/offer';
 
 type TAppProps = {
-  offersCount: number;
+  offers: Offer[];
 };
 
-function App({offersCount}: TAppProps): JSX.Element {
+function App({offers}: TAppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
-            path={AppRoute.Main}
-            element={<MainPage offersCount={offersCount} />}
+            path={AppRoute.Root}
+            element={<MainPage offers={offers} />}
           />
           <Route
             path={AppRoute.Login}
             element={
               <ProtectedRoute
                 authorizationStatus={AuthorizationStatus.Auth}
-                redirectTo={AppRoute.Main}
+                redirectTo={AppRoute.Root}
               >
                 <LoginPage />
               </ProtectedRoute>
@@ -36,16 +37,16 @@ function App({offersCount}: TAppProps): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <ProtectedRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
+                authorizationStatus={AuthorizationStatus.Auth}
                 redirectTo={AppRoute.Login}
               >
-                <FavoritesPage />
+                <FavoritesPage offers={offers} />
               </ProtectedRoute>
             }
           />
           <Route
-            path={AppRoute.Offer}
-            element={<OfferPage />}
+            path={`${AppRoute.Offer}/:id`}
+            element={<OfferPage offers={offers} />}
           />
           <Route
             path='*'
