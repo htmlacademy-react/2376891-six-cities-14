@@ -12,7 +12,7 @@ function NotFoundPage(): JSX.Element {
       <h1 className={styles.title}>404 Not Found</h1>
       <p className={styles.text}>
         Return to the{' '}
-        <Link to={AppRoute.Main} className={styles.link}>main page</Link>
+        <Link to={AppRoute.Root} className={styles.link}>main page</Link>
       </p>
     </div>
   );
