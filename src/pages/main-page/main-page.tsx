@@ -2,12 +2,21 @@ import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types/offer';
 import Header from '../../components/header/header';
 import Cities from '../../components/cities/cities';
+import Map from '../../components/map/map';
+import { useState } from 'react';
 
 type TMainPageProps = {
   offers: Offer[];
 };
 
-function MainPage({offers}: TMainPageProps): JSX.Element {
+function MainPage({ offers }: TMainPageProps): JSX.Element {
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+
+  const handleOfferHover = (offerId: string) => {
+    const currentOffer = offers.find((offer) => offer.id === offerId);
+    setSelectedOffer(currentOffer);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -52,7 +61,9 @@ function MainPage({offers}: TMainPageProps): JSX.Element {
             </ul>
           </section>
         </div>
-        <Cities offers={offers} />
+        <Cities offers={offers} onCityHover={handleOfferHover}>
+          <Map offers={offers} selectedOffer={selectedOffer}></Map>
+        </Cities>
       </main>
     </div>
   );
