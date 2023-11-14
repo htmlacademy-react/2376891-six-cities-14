@@ -5,17 +5,21 @@ import { useState } from 'react';
 
 type TCitiesProps = {
   offers: Offer[];
+  onCityHover: (offerId: string) => void;
+  children: JSX.Element;
 }
 
-function Cities({ offers }: TCitiesProps): JSX.Element {
+function Cities({ offers, onCityHover: onOfferHover, children }: TCitiesProps): JSX.Element {
   const [, setActiveCardId] = useState<string | null>(null);
 
   const handleCardMouseEnter = (id: string) => {
     setActiveCardId(id);
+    onOfferHover(id);
   };
 
   const handleCardMouseLeave = () => {
     setActiveCardId(null);
+    onOfferHover('');
   };
 
   return (
@@ -51,9 +55,10 @@ function Cities({ offers }: TCitiesProps): JSX.Element {
               )}
           </div>
         </section>
-        <div className="cities__right-section">
+        {children}
+        {/* <div className="cities__right-section">
           <section className="cities__map map"></section>
-        </div>
+        </div> */}
       </div>
     </div>
   );
