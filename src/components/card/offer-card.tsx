@@ -5,19 +5,23 @@ import {capitalize} from '../../utils/common';
 
 type TOfferProps = {
   offer: Offer;
-  onCardMouseEnter: () => void;
-  onCardMouseLeave: () => void;
+  onCardMouseEnter?: () => void;
+  onCardMouseLeave?: () => void;
+  block: string;
 };
 
-function OfferCard({offer, onCardMouseEnter, onCardMouseLeave}: TOfferProps): JSX.Element {
+function OfferCard({offer, onCardMouseEnter, onCardMouseLeave, block}: TOfferProps): JSX.Element {
   const { price, isPremium, type, id, previewImage, title } = offer;
 
   return (
-    <article className="cities__card place-card" onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave} >
-      <div className="place-card__mark">
-        <span>{isPremium ? 'Premium' : ''}</span>
-      </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+    <article className={`${block}__card place-card`} onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave} >
+      {isPremium ?
+        (
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div>
+        ) : ''}
+      <div className={`${block}__image-wrapper place-card__image-wrapper`} >
         <Link to={`${AppRoute.Offer}/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
         </Link>

@@ -1,7 +1,6 @@
 export const OFFER_IMAGES_COUNT = 6;
-
-export const URL_MARKER_DEFAULT = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
-export const URL_MARKER_CURRENT = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+export const MAX_NEAR_OFFERS_COUNT = 3;
+export const MAX_REVIEWS_COUNT = 10;
 
 export enum AppRoute {
   Root = '/',

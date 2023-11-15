@@ -8,12 +8,14 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import ProtectedRoute from '../protected-route/protected-route';
 import { Offer } from '../../types/offer';
+import { Review } from '../../types/review';
 
 type TAppProps = {
   offers: Offer[];
+  reviews: Review[];
 };
 
-function App({offers}: TAppProps): JSX.Element {
+function App({offers, reviews}: TAppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -46,7 +48,7 @@ function App({offers}: TAppProps): JSX.Element {
           />
           <Route
             path={`${AppRoute.Offer}/:id`}
-            element={<OfferPage offers={offers} />}
+            element={<OfferPage offers={offers} reviews={reviews} />}
           />
           <Route
             path='*'

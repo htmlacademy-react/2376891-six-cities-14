@@ -2,13 +2,13 @@ import { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { Map, TileLayer } from 'leaflet';
 import { Offer } from '../types/offer';
 
+const TILE_LAYER = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
 function useMap(
   mapRef: MutableRefObject<HTMLElement | null>,
-  offers: Offer[]
+  location: Offer['location']
 ): Map | null {
-  const { city } = offers[0];
-  const { location } = city;
-
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
 
@@ -23,10 +23,10 @@ function useMap(
       });
 
       const layer = new TileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        TILE_LAYER,
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            COPYRIGHT,
         }
       );
 
@@ -35,7 +35,7 @@ function useMap(
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, offers]);
+  }, [mapRef, location]);
 
   return map;
 }

@@ -1,34 +1,42 @@
 import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
 import { Offer } from '../../types/offer';
-import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
-import 'leaflet/dist/leaflet.css';
 
 type TMapProps = {
   offers: Offer[];
   selectedOffer: Offer | undefined;
+  location: Offer['city']['location'];
+  block: string;
 }
 
 const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
+  iconSize: [40, 40],//[28, 40]
+  iconAnchor: [20, 40],//[14, 40]
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
+  iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-function Map({offers, selectedOffer}: TMapProps): JSX.Element {
+function Map({offers, selectedOffer, location, block}: TMapProps): JSX.Element {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, offers);
+  const map = useMap(mapRef, location);
+
+  useEffect(() => {
+    if (map) {
+      map.setView([location.latitude, location.longitude], location.zoom);
+    }
+  }, [map, location]);
 
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
+
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.city.location.latitude,
@@ -48,14 +56,18 @@ function Map({offers, selectedOffer}: TMapProps): JSX.Element {
   }, [map, offers, selectedOffer]);
 
   return (
-    <div className="cities__right-section">
-      <section
-        className="cities__map map"
-        style={{ height: '500px' }}
-        ref={mapRef}
-      >
-      </section>
-    </div>
+    <section
+      className={`${block}__map map`}
+      style={{
+        height: '100%',
+        minHeight: '500px',
+        width: '100%',
+        maxWidth: '1144px',
+        margin: '0 auto',
+      }}
+      ref={mapRef}
+    >
+    </section>
   );
 }
 

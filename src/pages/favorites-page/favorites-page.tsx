@@ -8,10 +8,6 @@ type TFavoritesProps = {
   offers: Offer[];
 };
 
-// function getFavoritesByCity() {
-
-// }
-
 function getOffers(offers: Offer[]) {
   const favoriteCity = new Set<string>();
   const favoritesOffers = offers.filter((offer) => offer.isFavorite).sort((a, b) => (a.city.name > b.city.name ? 1 : -1));

@@ -10,6 +10,7 @@ type TMainPageProps = {
 };
 
 function MainPage({ offers }: TMainPageProps): JSX.Element {
+  const location = offers[0].city.location;
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
 
   const handleOfferHover = (offerId: string) => {
@@ -61,8 +62,10 @@ function MainPage({ offers }: TMainPageProps): JSX.Element {
             </ul>
           </section>
         </div>
-        <Cities offers={offers} onCityHover={handleOfferHover}>
-          <Map offers={offers} selectedOffer={selectedOffer}></Map>
+        <Cities offers={offers} onOfferHover={handleOfferHover}>
+          <div className="cities__right-section">
+            <Map offers={offers} selectedOffer={selectedOffer} location={location} block='cities'></Map>
+          </div>
         </Cities>
       </main>
     </div>
