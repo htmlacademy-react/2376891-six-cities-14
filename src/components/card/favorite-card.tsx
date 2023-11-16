@@ -1,6 +1,4 @@
 import { Offer } from '../../types/offer';
-// import { Navigate } from 'react-router-dom';
-// import { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';

@@ -5,7 +5,7 @@ export type User = {
   avatarUrl: string;
 };
 
-export type Comment = {
+export type Review = {
   id: number;
   user: User;
   rating: number;

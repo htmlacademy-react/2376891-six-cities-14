@@ -1,6 +1,6 @@
-import { Comment } from '../types/comment';
+import { Review } from '../types/review';
 
-export const comments: Comment[] = [
+export const reviews: Review[] = [
   {
     id: 1,
     user: {
@@ -14,7 +14,7 @@ export const comments: Comment[] = [
     date: '2023-09-21T09:23:20.316Z'
   },
   {
-    id: 1,
+    id: 2,
     user: {
       id: 15,
       isPro: false,
@@ -26,7 +26,7 @@ export const comments: Comment[] = [
     date: '2023-10-02T09:23:20.316Z'
   },
   {
-    id: 1,
+    id: 3,
     user: {
       id: 14,
       isPro: true,
@@ -38,7 +38,7 @@ export const comments: Comment[] = [
     date: '2023-09-09T09:23:20.316Z'
   },
   {
-    id: 2,
+    id: 4,
     user: {
       id: 13,
       isPro: false,
