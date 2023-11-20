@@ -1,10 +1,10 @@
-import { Offer } from '../../types/offer';
+import { TOffer } from '../../types/offer';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 type TFavoriteCardProps = {
-  offer: Offer;
+  offer: TOffer;
 };
 
 function FavoriteCard({ offer }: TFavoriteCardProps): JSX.Element {
@@ -45,7 +45,7 @@ function FavoriteCard({ offer }: TFavoriteCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to="#">{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

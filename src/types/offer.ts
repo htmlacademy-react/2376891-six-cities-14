@@ -1,23 +1,23 @@
-export type Location = {
+export type TLocation = {
   latitude: number;
   longitude: number;
   zoom: number;
 };
 
-export type City = {
+export type TCity = {
   name: string;
-  location: Location;
+  location: TLocation;
 };
 
-export type Host = {
+export type THost = {
   id: number;
   name: string;
   isPro: boolean;
   avatarUrl: string;
 };
 
-export type Offer = {
-  city: City;
+export type TOffer = {
+  city: TCity;
   previewImage: string;
   images: string[];
   title: string;
@@ -29,8 +29,10 @@ export type Offer = {
   maxAdults: number;
   price: number;
   goods: string[];
-  host: Host;
+  host: THost;
   description: string;
-  location: Location;
+  location: TLocation;
   id: string;
 };
+
+export type TOffers = TOffer[];

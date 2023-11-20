@@ -1,6 +1,16 @@
 export const OFFER_IMAGES_COUNT = 6;
-export const MAX_NEAR_OFFERS_COUNT = 3;
+export const MAX_NEAR_PLACES_COUNT = 3;
 export const MAX_REVIEWS_COUNT = 10;
+export const DEFAULT_CITY = 'Paris';
+
+export const cities = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];
 
 export enum AppRoute {
   Root = '/',

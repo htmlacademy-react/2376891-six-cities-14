@@ -1,15 +1,16 @@
 import OfferCard from '../card/offer-card';
-import { Offer } from '../../types/offer';
+import { TOffer } from '../../types/offer';
 import { addPluralEnding } from '../../utils/common';
 import { useState } from 'react';
 
 type TCitiesProps = {
-  offers: Offer[];
+  offersByCity: TOffer[];
+  selectedCity: string | null;
   onOfferHover: (offerId: string) => void;
   children: JSX.Element;
 }
 
-function Cities({ offers, onOfferHover, children }: TCitiesProps): JSX.Element {
+function Cities({ offersByCity, selectedCity, onOfferHover, children }: TCitiesProps): JSX.Element {
   const [, setActiveCardId] = useState<string | null>(null);
 
   const handleCardMouseEnter = (id: string) => {
@@ -27,7 +28,7 @@ function Cities({ offers, onOfferHover, children }: TCitiesProps): JSX.Element {
       <div className="cities__places-container container">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">{offers.length} place{addPluralEnding(offers.length)} to stay in Amsterdam</b>
+          <b className="places__found">{offersByCity.length} place{addPluralEnding(offersByCity.length)} to stay in {selectedCity}</b>
           <form className="places__sorting" action="#" method="get">
             <span className="places__sorting-caption">Sort by</span>
             <span className="places__sorting-type" tabIndex={0}>
@@ -44,8 +45,8 @@ function Cities({ offers, onOfferHover, children }: TCitiesProps): JSX.Element {
             </ul>
           </form>
           <div className="cities__places-list places__list tabs__content">
-            {(offers.length > 0) &&
-              offers.map((offer) => (
+            {(offersByCity.length > 0) &&
+              offersByCity.map((offer) => (
                 <OfferCard
                   offer={offer}
                   key={offer.id}

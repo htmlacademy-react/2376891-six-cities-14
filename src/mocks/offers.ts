@@ -1,6 +1,6 @@
-import { Offer } from '../types/offer';
+import { TOffers } from '../types/offer';
 
-export const offers: Offer[] = [
+export const offers: TOffers = [
   {
     city: {
       name: 'Amsterdam',
@@ -219,5 +219,111 @@ export const offers: Offer[] = [
       zoom: 16
     },
     id: '4'
+  },
+  {
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13
+      }
+    },
+    previewImage: 'https://14.design.pages.academy/static/hotel/6.jpg',
+    images: [
+      'https://14.react.pages.academy/static/offer/15.jpg',
+      'https://14.react.pages.academy/static/offer/18.jpg',
+      'https://14.react.pages.academy/static/offer/3.jpg',
+      'https://14.react.pages.academy/static/offer/6.jpg',
+      'https://14.react.pages.academy/static/offer/19.jpg',
+      'https://14.react.pages.academy/static/offer/2.jpg',
+      'https://14.react.pages.academy/static/offer/17.jpg',
+      'https://14.react.pages.academy/static/offer/10.jpg',
+      'https://14.react.pages.academy/static/offer/1.jpg',
+      'https://14.react.pages.academy/static/offer/4.jpg',
+      'https://14.react.pages.academy/static/offer/16.jpg',
+      'https://14.react.pages.academy/static/offer/20.jpg',
+      'https://14.react.pages.academy/static/offer/13.jpg',
+      'https://14.react.pages.academy/static/offer/5.jpg'
+    ],
+    title: 'Canal View Prinsengracht',
+    isFavorite: true,
+    isPremium: false,
+    rating: 1.8,
+    type: 'room',
+    bedrooms: 4,
+    maxAdults: 4,
+    price: 213,
+    goods: [
+      'Breakfast',
+      'Washer',
+      'Laptop friendly workspace',
+      'Air conditioning'
+    ],
+    host: {
+      id: 25,
+      name: 'Angelina',
+      isPro: true,
+      avatarUrl: 'img/avatar-angelina.jpg'
+    },
+    description: 'Design interior in most sympathetic area! Complitely renovated, well-equipped, cosy studio in idyllic, over 100 years old wooden house. Calm street, fast connection to center and airport.',
+    location: {
+      latitude: 48.868610000000004,
+      longitude: 2.342499,
+      zoom: 16
+    },
+    id: '5'
+  },
+  {
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.75661,
+        longitude: 2.381499,
+        zoom: 13
+      }
+    },
+    previewImage: 'https://14.design.pages.academy/static/hotel/13.jpg',
+    images: [
+      'https://14.react.pages.academy/static/offer/15.jpg',
+      'https://14.react.pages.academy/static/offer/18.jpg',
+      'https://14.react.pages.academy/static/offer/3.jpg',
+      'https://14.react.pages.academy/static/offer/6.jpg',
+      'https://14.react.pages.academy/static/offer/19.jpg',
+      'https://14.react.pages.academy/static/offer/2.jpg',
+      'https://14.react.pages.academy/static/offer/17.jpg',
+      'https://14.react.pages.academy/static/offer/10.jpg',
+      'https://14.react.pages.academy/static/offer/1.jpg',
+      'https://14.react.pages.academy/static/offer/4.jpg',
+      'https://14.react.pages.academy/static/offer/16.jpg',
+      'https://14.react.pages.academy/static/offer/20.jpg',
+      'https://14.react.pages.academy/static/offer/13.jpg',
+      'https://14.react.pages.academy/static/offer/5.jpg'
+    ],
+    title: 'Beautiful & luxurious apartment at great location',
+    isFavorite: false,
+    isPremium: false,
+    rating: 3,
+    type: 'house',
+    bedrooms: 4,
+    maxAdults: 4,
+    price: 36,
+    goods: [
+      'Breakfast',
+      'Washer',
+    ],
+    host: {
+      id: 25,
+      name: 'Angelina',
+      isPro: true,
+      avatarUrl: 'img/avatar-angelina.jpg'
+    },
+    description: 'Design interior in most sympathetic area! Complitely renovated, well-equipped, cosy studio in idyllic, over 100 years old wooden house. Calm street, fast connection to center and airport.',
+    location: {
+      latitude: 48.858610000000006,
+      longitude: 2.330499,
+      zoom: 16
+    },
+    id: '6'
   },
 ];

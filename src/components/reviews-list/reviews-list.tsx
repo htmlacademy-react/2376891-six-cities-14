@@ -1,10 +1,10 @@
-import { Review } from '../../types/review';
+import { TReview } from '../../types/review';
 import ReviewCard from '../card/review-card';
 import ReviewForm from '../review-form/review-form';
 import { MAX_REVIEWS_COUNT } from '../../const';
 
 type TReviewsListProps = {
-  reviews: Review[];
+  reviews: TReview[];
 }
 
 function ReviewsList({ reviews }: TReviewsListProps) {
