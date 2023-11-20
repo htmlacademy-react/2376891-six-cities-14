@@ -1,13 +1,31 @@
 import OfferCard from '../card/offer-card';
-import { TOffer } from '../../types/offer';
-import { addPluralEnding } from '../../utils/common';
+import { TOffers } from '../../types/offer';
+import { addPluralEnding, sortOffersToHigh, sortOffersToLow, sortOffersByRating } from '../../utils/common';
 import { useState } from 'react';
+import { useAppSelector } from '../../hooks';
+import { SortOption } from '../../const';
 
 type TCitiesProps = {
-  offersByCity: TOffer[];
+  offersByCity: TOffers;
   selectedCity: string | null;
   onOfferHover: (offerId: string) => void;
-  children: JSX.Element;
+  children: JSX.Element[];
+}
+
+function getSortedOffers(sortType: string | null, offersByCity: TOffers): TOffers {
+  const sortedOffers: TOffers = [...offersByCity];
+
+  switch (sortType) {
+    case SortOption.Popular:
+      return offersByCity;
+    case SortOption.LowToHigh:
+      return sortedOffers.sort(sortOffersToHigh);
+    case SortOption.HighToLow:
+      return sortedOffers.sort(sortOffersToLow);
+    case SortOption.TopRatedFirst:
+      return sortedOffers.sort(sortOffersByRating);
+  }
+  return sortedOffers;
 }
 
 function Cities({ offersByCity, selectedCity, onOfferHover, children }: TCitiesProps): JSX.Element {
@@ -23,30 +41,19 @@ function Cities({ offersByCity, selectedCity, onOfferHover, children }: TCitiesP
     onOfferHover('');
   };
 
+  const sortType = useAppSelector((state) => state.sortType);
+  const sortedOffers = getSortedOffers(sortType, offersByCity);
+
   return (
     <div className="cities">
       <div className="cities__places-container container">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{offersByCity.length} place{addPluralEnding(offersByCity.length)} to stay in {selectedCity}</b>
-          <form className="places__sorting" action="#" method="get">
-            <span className="places__sorting-caption">Sort by</span>
-            <span className="places__sorting-type" tabIndex={0}>
-              Popular
-              <svg className="places__sorting-arrow" width="7" height="4">
-                <use xlinkHref="#icon-arrow-select"></use>
-              </svg>
-            </span>
-            <ul className="places__options places__options--custom places__options--opened">
-              <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-              <li className="places__option" tabIndex={0}>Price: low to high</li>
-              <li className="places__option" tabIndex={0}>Price: high to low</li>
-              <li className="places__option" tabIndex={0}>Top rated first</li>
-            </ul>
-          </form>
+          {children[0]}
           <div className="cities__places-list places__list tabs__content">
-            {(offersByCity.length > 0) &&
-              offersByCity.map((offer) => (
+            {(sortedOffers) &&
+              sortedOffers.map((offer) => (
                 <OfferCard
                   offer={offer}
                   key={offer.id}
@@ -57,7 +64,7 @@ function Cities({ offersByCity, selectedCity, onOfferHover, children }: TCitiesP
               )}
           </div>
         </section>
-        {children}
+        {children[1]}
       </div>
     </div>
   );

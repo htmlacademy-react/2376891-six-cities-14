@@ -1,10 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setActiveCity, fetchOffers, fetchOffer, fetchNearPlaces, fetchReviews, dropOffer, fetchFavorites } from './action';
+import { setActiveCity, fetchOffers, fetchOffer, fetchNearPlaces, fetchReviews, dropOffer, fetchFavorites, setSortType } from './action';
 import { DEFAULT_CITY } from '../const';
 import { offers } from '../mocks/offers';
 import { reviews } from '../mocks/reviews';
 import { TOffer, TOffers } from '../types/offer';
 import { TReviews } from '../types/review';
+import { SortOption } from '../const';
 
 type TInitialState = {
   activeCity: string | null;
@@ -13,6 +14,7 @@ type TInitialState = {
   nearPlaces: TOffers;
   reviews: TReviews;
   favorites: TOffers;
+  sortType: string | null;
 }
 
 const initialState: TInitialState = {
@@ -22,6 +24,7 @@ const initialState: TInitialState = {
   nearPlaces: [],
   reviews: [],
   favorites: [],
+  sortType: SortOption.Popular,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -47,6 +50,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchFavorites, (state) => {
       state.favorites = state.offers.filter((offer) => offer.isFavorite);
+    })
+    .addCase(setSortType, (state, action) => {
+      state.sortType = action.payload;
     });
 });
 

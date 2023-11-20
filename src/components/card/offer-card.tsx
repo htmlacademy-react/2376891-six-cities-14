@@ -1,7 +1,8 @@
 import { TOffer } from '../../types/offer';
 import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
-import {capitalize} from '../../utils/common';
+import { capitalize } from '../../utils/common';
+import { getRatingWidth } from '../../utils/common';
 
 type TOfferProps = {
   offer: TOffer;
@@ -11,7 +12,7 @@ type TOfferProps = {
 };
 
 function OfferCard({offer, onCardMouseEnter, onCardMouseLeave, block}: TOfferProps): JSX.Element {
-  const { price, isPremium, type, id, previewImage, title } = offer;
+  const { price, isPremium, type, id, previewImage, title, rating } = offer;
 
   return (
     <article className={`${block}__card place-card`} onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave} >
@@ -41,7 +42,7 @@ function OfferCard({offer, onCardMouseEnter, onCardMouseLeave, block}: TOfferPro
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{width: getRatingWidth(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

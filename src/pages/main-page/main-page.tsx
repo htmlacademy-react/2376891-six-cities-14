@@ -4,10 +4,11 @@ import Header from '../../components/header/header';
 import Cities from '../../components/cities/cities';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
+import SortOptions from '../../components/sort-options/sort-options';
 import { cities } from '../../const';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setActiveCity, fetchOffers } from '../../store/action';
+import { setActiveCity, fetchOffers, fetchFavorites } from '../../store/action';
 import { getOffersByCity } from '../../utils/common';
 
 function MainPage(): JSX.Element | null {
@@ -20,7 +21,7 @@ function MainPage(): JSX.Element | null {
 
   useEffect(() => {
     dispatch(fetchOffers());
-    // dispatch(fetchFavorites());
+    dispatch(fetchFavorites());
   }, [dispatch, selectedCity]);
 
   if (offers.length === 0) {
@@ -49,6 +50,7 @@ function MainPage(): JSX.Element | null {
         <h1 className="visually-hidden">Cities</h1>
         <CitiesList cities={cities} onCityClick={handleCityClick} />
         <Cities offersByCity={offersByCity} selectedCity={selectedCity} onOfferHover={handleOfferHover}>
+          <SortOptions />
           <div className="cities__right-section">
             <Map offers={offersByCity} selectedOffer={selectedOffer} location={location} block='cities'></Map>
           </div>
