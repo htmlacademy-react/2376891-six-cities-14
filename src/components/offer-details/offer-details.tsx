@@ -1,18 +1,19 @@
-import { Offer } from '../../types/offer';
-import { Review } from '../../types/review';
+import { TOffer } from '../../types/offer';
 import ReviewsList from '../reviews-list/reviews-list';
 import { Fragment } from 'react';
 import { OFFER_IMAGES_COUNT } from '../../const';
 import { getRatingWidth, capitalize, addPluralEnding } from '../../utils/common';
+import { useAppSelector } from '../../hooks';
 
 type TOfferDetailsProps = {
-  offer: Offer;
-  reviews: Review[];
+  offer: TOffer;
 }
 
-function OfferDetails({ offer, reviews }: TOfferDetailsProps): JSX.Element {
+function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
   const { title, images, isPremium, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
   const { name, avatarUrl, isPro } = host;
+
+  const reviews = useAppSelector((state) => state.reviews);
 
   return (
     <Fragment>

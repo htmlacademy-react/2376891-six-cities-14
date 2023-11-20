@@ -1,10 +1,10 @@
-import { Offer } from '../../types/offer';
+import { TOffer } from '../../types/offer';
 import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import {capitalize} from '../../utils/common';
 
 type TOfferProps = {
-  offer: Offer;
+  offer: TOffer;
   onCardMouseEnter?: () => void;
   onCardMouseLeave?: () => void;
   block: string;

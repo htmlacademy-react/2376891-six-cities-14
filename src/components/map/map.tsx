@@ -2,19 +2,19 @@ import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
-import { Offer } from '../../types/offer';
+import { TOffer } from '../../types/offer';
 
 type TMapProps = {
-  offers: Offer[];
-  selectedOffer: Offer | undefined;
-  location: Offer['city']['location'];
+  offers: TOffer[];
+  selectedOffer: TOffer | undefined;
+  location: TOffer['city']['location'];
   block: string;
 }
 
 const defaultCustomIcon = new Icon({
   iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
-  iconSize: [40, 40],//[28, 40]
-  iconAnchor: [20, 40],//[14, 40]
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
 const currentCustomIcon = new Icon({

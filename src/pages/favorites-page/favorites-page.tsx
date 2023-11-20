@@ -1,16 +1,15 @@
 import FavoriteCard from '../../components/card/favorite-card';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
+import { TOffers } from '../../types/offer';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchOffers, fetchFavorites } from '../../store/action';
+import { Link } from 'react-router-dom';
 
-type TFavoritesProps = {
-  offers: Offer[];
-};
-
-function getOffers(offers: Offer[]) {
+function getFavoritesList(favoritesOffers: TOffers) {
   const favoriteCity = new Set<string>();
-  const favoritesOffers = offers.filter((offer) => offer.isFavorite).sort((a, b) => (a.city.name > b.city.name ? 1 : -1));
 
   favoritesOffers.map((offer) => {
     if (!favoriteCity.has(offer.city.name)) {
@@ -24,9 +23,9 @@ function getOffers(offers: Offer[]) {
         <li className="favorites__locations-items" key={city}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
+              <Link className="locations__item-link" to="#">
                 <span>{city}</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="favorites__places">
@@ -44,7 +43,16 @@ function getOffers(offers: Offer[]) {
   );
 }
 
-function FavoritesPage({ offers }: TFavoritesProps): JSX.Element {
+function FavoritesPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const favoritesOffers = useAppSelector((state) => state.favorites);
+  const favoritesByCity = getFavoritesList(favoritesOffers);
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+    dispatch(fetchFavorites());
+  }, [dispatch]);
+
   return (
     <div className="page">
       <Helmet>
@@ -55,7 +63,7 @@ function FavoritesPage({ offers }: TFavoritesProps): JSX.Element {
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            {getOffers(offers)}
+            {favoritesByCity}
           </section>
         </div>
       </main>

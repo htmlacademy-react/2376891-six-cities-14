@@ -1,9 +1,9 @@
-import { Review } from '../../types/review';
+import { TReview } from '../../types/review';
 import { getRatingWidth } from '../../utils/common';
 import { humanizeDate } from '../../utils/date';
 
 type TReviewCardProps = {
-  review: Review;
+  review: TReview;
 };
 
 function ReviewCard({ review }: TReviewCardProps): JSX.Element {
