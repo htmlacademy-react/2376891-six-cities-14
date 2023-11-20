@@ -1,8 +1,11 @@
 import Logo from '../logo/logo';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
 
 function Header(): JSX.Element {
+  const favoritesOffers = useAppSelector((state) => state.favorites);
+
   return (
     <header className="header">
       <div className="container">
@@ -17,7 +20,7 @@ function Header(): JSX.Element {
                   <Link to={AppRoute.Favorites}>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
                   </Link>
-                  <span className="header__favorite-count">3</span>
+                  <span className="header__favorite-count">{favoritesOffers.length}</span>
                 </Link>
               </li>
               <li className="header__nav-item">

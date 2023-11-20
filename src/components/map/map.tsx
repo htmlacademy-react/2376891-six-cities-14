@@ -12,26 +12,23 @@ type TMapProps = {
 }
 
 const defaultCustomIcon = new Icon({
-  iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'public/img/pin.svg',
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'public/img/pin-active.svg',
 });
 
-function Map({offers, selectedOffer, location, block}: TMapProps): JSX.Element {
+function Map({ offers, selectedOffer, location, block }: TMapProps): JSX.Element {
+  const viewLocation = selectedOffer ? selectedOffer.city.location : location;
   const mapRef = useRef(null);
-  const map = useMap(mapRef, location);
+  const map = useMap(mapRef, viewLocation);
 
   useEffect(() => {
     if (map) {
-      map.setView([location.latitude, location.longitude], location.zoom);
+      map.setView([viewLocation.latitude, viewLocation.longitude], viewLocation.zoom);
     }
-  }, [map, location]);
+  }, [map, viewLocation]);
 
   useEffect(() => {
     if (map) {
