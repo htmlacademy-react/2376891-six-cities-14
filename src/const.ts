@@ -1,6 +1,7 @@
 export const OFFER_IMAGES_COUNT = 6;
 export const MAX_NEAR_PLACES_COUNT = 3;
 export const MAX_REVIEWS_COUNT = 10;
+export const TIMEOUT_SHOW_ERROR = 2000;
 export const DEFAULT_CITY = 'Paris';
 
 export const cities = [
@@ -30,6 +31,12 @@ export enum SortOption {
   LowToHigh = 'Price: low to high',
   HighToLow = 'Price: high to low',
   TopRatedFirst = 'Top rated first',
+}
+
+export enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 export const Rating = {

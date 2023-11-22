@@ -6,9 +6,15 @@ import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import SortOptions from '../../components/sort-options/sort-options';
 import { cities } from '../../const';
-import { useState, useEffect } from 'react';
+import {
+  useState,
+  // useEffect
+} from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setActiveCity, fetchOffers, fetchFavorites } from '../../store/action';
+import {
+  setActiveCity,
+  // loadOffers, loadFavorites
+} from '../../store/action';
 import { getOffersByCity } from '../../utils/common';
 
 function MainPage(): JSX.Element | null {
@@ -19,10 +25,10 @@ function MainPage(): JSX.Element | null {
 
   const selectedCity = useAppSelector((state) => state.activeCity);
 
-  useEffect(() => {
-    dispatch(fetchOffers());
-    dispatch(fetchFavorites());
-  }, [dispatch, selectedCity]);
+  // useEffect(() => {
+  //   dispatch(loadOffers());
+  //   dispatch(loadFavorites());
+  // }, [dispatch, selectedCity]);
 
   if (offers.length === 0) {
     return null;
