@@ -1,18 +1,27 @@
 import { createAction } from '@reduxjs/toolkit';
-import { TOffer } from '../types/offer';
+import { TOffer, TOffers } from '../types/offer';
+import { AppRoute, AuthorizationStatus } from '../const';
 
 export const setActiveCity = createAction<string | null>('setActiveCity');
 
-export const fetchOffers = createAction('OFFERS/fetchOffers');
+export const loadOffers = createAction<TOffers>('offers/fetchOffers');
 
-export const fetchOffer = createAction<TOffer['id']>('OFFER/fetchOffer');
+export const loadOffer = createAction<TOffer['id']>('offer/fetchOffer');
 
-export const fetchNearPlaces = createAction<TOffer['id']>('NEAR_PLACES/fetchNearPlaces');
+export const loadNearPlaces = createAction<TOffer['id']>('nearPlaces/fetchNearPlaces');
 
-export const fetchReviews = createAction('REVIEWS/fetchReviews');
+export const loadReviews = createAction('reviews/fetchReviews');
 
-export const dropOffer = createAction('OFFER/dropOffer');
+export const dropOffer = createAction('offer/dropOffer');
 
-export const fetchFavorites = createAction('FAVORITES/fetchFavorites');
+export const loadFavorites = createAction('favorites/fetchFavorites');
 
-export const setSortType = createAction<string | null>('SORT_TYPES/setSortType');
+export const setSortType = createAction<string | null>('sortTypes/setSortType');
+
+export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+
+export const setError = createAction<string | null>('error/setError');
+
+export const setOffersDataLoadingStatus = createAction<boolean>('offers/setOffersDataLoadingStatus');
+
+export const redirectToRoute = createAction<AppRoute>('data/redirectToRoute');

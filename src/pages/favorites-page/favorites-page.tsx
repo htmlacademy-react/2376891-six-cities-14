@@ -5,7 +5,7 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
-import { fetchOffers, fetchFavorites } from '../../store/action';
+import { loadOffers, loadFavorites } from '../../store/action';
 import { Link } from 'react-router-dom';
 
 function getFavoritesList(favoritesOffers: TOffers) {
@@ -49,8 +49,8 @@ function FavoritesPage(): JSX.Element {
   const favoritesByCity = getFavoritesList(favoritesOffers);
 
   useEffect(() => {
-    dispatch(fetchOffers());
-    dispatch(fetchFavorites());
+    dispatch(loadOffers());
+    dispatch(loadFavorites());
   }, [dispatch]);
 
   return (

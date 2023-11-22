@@ -8,7 +8,7 @@ import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {useEffect} from 'react';
-import { dropOffer, fetchNearPlaces, fetchOffer, fetchReviews } from '../../store/action';
+import { dropOffer, loadNearPlaces, loadOffer, loadReviews } from '../../store/action';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
@@ -19,9 +19,9 @@ function OfferPage(): JSX.Element {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchOffer(id));
-      dispatch(fetchNearPlaces(id));
-      dispatch(fetchReviews());
+      dispatch(loadOffer(id));
+      dispatch(loadNearPlaces(id));
+      dispatch(loadReviews());
     }
 
     return () => {
