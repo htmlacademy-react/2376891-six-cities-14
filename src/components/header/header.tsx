@@ -1,10 +1,24 @@
 import Logo from '../logo/logo';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import React, {MouseEvent} from 'react';
+import { logoutAction } from '../../store/api-actions';
+
+// type THeaderProps = {
+//   authorizationStatus: AuthorizationStatus;
+// }
 
 function Header(): JSX.Element {
+  const dispatch = useAppDispatch();
   const favoritesOffers = useAppSelector((state) => state.favorites);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
+
+    dispatch(logoutAction());
+  };
 
   return (
     <header className="header">
@@ -17,17 +31,28 @@ function Header(): JSX.Element {
                 <Link className="header__nav-link header__nav-link--profile" to="#">
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
-                  <Link to={AppRoute.Favorites}>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                  {authorizationStatus === AuthorizationStatus.NoAuth ? (
+                    <Link to={AppRoute.Login} >
+                      <span className="header__login">Sign in</span>
+                    </Link>
+                  ) : (
+                    <React.Fragment>
+                      <Link to={AppRoute.Favorites}>
+                        <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                      </Link>
+                      <span className="header__favorite-count">{favoritesOffers.length}</span>
+                    </React.Fragment>
+                  )}
+
+                </Link>
+              </li>
+              {authorizationStatus === AuthorizationStatus.Auth && (
+                <li className="header__nav-item">
+                  <Link className="header__nav-link" to="#" onClick={handleClick} >
+                    <span className="header__signout">Sign out</span>
                   </Link>
-                  <span className="header__favorite-count">{favoritesOffers.length}</span>
-                </Link>
-              </li>
-              <li className="header__nav-item">
-                <Link className="header__nav-link" to="#">
-                  <span className="header__signout">Sign out</span>
-                </Link>
-              </li>
+                </li>
+              )}
             </ul>
           </nav>
         </div>

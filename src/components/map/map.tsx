@@ -20,9 +20,10 @@ const currentCustomIcon = new Icon({
 });
 
 function Map({ offers, selectedOffer, location, block }: TMapProps): JSX.Element {
-  const viewLocation = selectedOffer ? selectedOffer.city.location : location;
+  const viewLocation = selectedOffer ? selectedOffer.location : location;
   const mapRef = useRef(null);
-  const map = useMap(mapRef, viewLocation);
+
+  const map = useMap(mapRef, location);
 
   useEffect(() => {
     if (map) {
@@ -36,8 +37,8 @@ function Map({ offers, selectedOffer, location, block }: TMapProps): JSX.Element
 
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.city.location.latitude,
-          lng: offer.city.location.longitude,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
 
         marker.setIcon(

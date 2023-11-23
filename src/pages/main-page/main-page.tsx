@@ -17,6 +17,10 @@ import {
 } from '../../store/action';
 import { getOffersByCity } from '../../utils/common';
 
+// type TMainPageProps = {
+//   authorizationStatus: AuthorizationStatus;
+// }
+
 function MainPage(): JSX.Element | null {
   const dispatch = useAppDispatch();
 
@@ -35,7 +39,7 @@ function MainPage(): JSX.Element | null {
   }
 
   const offersByCity = getOffersByCity(offers, selectedCity);
-  const location = offersByCity.length > 0 ? offersByCity[0].city.location : offers[0].city.location;
+  const location = offers[0].location;
 
   const handleOfferHover = (offerId: string) => {
     const currentOffer = offers.find((offer) => offer.id === offerId);

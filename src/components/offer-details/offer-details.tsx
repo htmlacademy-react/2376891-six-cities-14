@@ -10,6 +10,7 @@ type TOfferDetailsProps = {
 }
 
 function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
+  // console.log(offer);
   const { title, images, isPremium, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
   const { name, avatarUrl, isPro } = host;
 
