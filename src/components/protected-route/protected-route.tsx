@@ -11,7 +11,7 @@ function ProtectedRoute(props: ProtectedRouteProps): JSX.Element {
   const { authorizationStatus, redirectTo, children } = props;
 
   return (
-    authorizationStatus === AuthorizationStatus.Auth ? children : <Navigate to={redirectTo} />
+    authorizationStatus === AuthorizationStatus.NoAuth ? children : <Navigate to={redirectTo} />
   );
 }
 

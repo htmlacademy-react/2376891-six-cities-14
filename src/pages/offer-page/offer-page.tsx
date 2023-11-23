@@ -15,6 +15,7 @@ function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const offer = useAppSelector((state) => state.offer);
+  // console.log(offer);
   const nearPlaces = useAppSelector((state) => state.nearPlaces).slice(0, MAX_NEAR_PLACES_COUNT);
 
   useEffect(() => {
