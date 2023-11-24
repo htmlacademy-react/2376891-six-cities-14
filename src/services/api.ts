@@ -2,6 +2,8 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosE
 import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
 import { processErrorHandle } from './process-error-handle';
+import browserHistory from '../browser-history';
+import { AppRoute } from '../const';
 
 type DetailMessageType = {
   type: string;
@@ -40,10 +42,14 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
+      if (error.response?.status === StatusCodes.NOT_FOUND) {
+        browserHistory.push(AppRoute.NotFound);
+      }
+
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = (error.response.data);
 
-        processErrorHandle(detailMessage.message);
+        processErrorHandle(detailMessage.message);//toast.warn(detailMessage.message);
       }
 
       throw error;

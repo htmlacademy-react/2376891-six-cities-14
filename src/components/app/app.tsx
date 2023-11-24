@@ -14,7 +14,7 @@ import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersLoading);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
@@ -57,7 +57,7 @@ function App(): JSX.Element {
             element={<OfferPage />}
           />
           <Route
-            path='*'
+            path={AppRoute.NotFound}
             element={<NotFoundPage />}
           />
         </Routes>

@@ -6,23 +6,26 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import OfferCard from '../../components/card/offer-card';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {useEffect} from 'react';
-import { dropOffer, loadNearPlaces, loadOffer, loadReviews } from '../../store/action';
+import { dropOffer } from '../../store/action';
+import { fetchOfferAction, fetchNearPlacesAction, fetchReviewsAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
 
+  const isOfferLoading = useAppSelector((state) => state.isOfferLoading);
   const offer = useAppSelector((state) => state.offer);
-  // console.log(offer);
-  const nearPlaces = useAppSelector((state) => state.nearPlaces).slice(0, MAX_NEAR_PLACES_COUNT);
+  const nearPlaces = useAppSelector((state) => state.nearPlaces);
+  const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
 
   useEffect(() => {
     if (id) {
-      dispatch(loadOffer(id));
-      dispatch(loadNearPlaces(id));
-      dispatch(loadReviews());
+      dispatch(fetchOfferAction(id));
+      dispatch(fetchNearPlacesAction(id));
+      dispatch(fetchReviewsAction(id));
     }
 
     return () => {
@@ -30,9 +33,15 @@ function OfferPage(): JSX.Element {
     };
   }, [id, dispatch]);
 
+  if (isOfferLoading) {
+    return <LoadingScreen />;
+  }
+
   if (!offer) {
     return <NotFoundPage />;
   }
+
+  const nearOffersForMap = nearPlacesToRender.concat(offer);
 
   return (
     <div className="page">
@@ -43,13 +52,13 @@ function OfferPage(): JSX.Element {
       <main className="page__main page__main--offer">
         <section className="offer">
           <OfferDetails offer={offer} />
-          <Map offers={nearPlaces} selectedOffer={offer} location={offer.city.location} block='offer'></Map>
+          <Map offers={nearOffersForMap} selectedOffer={offer} location={offer.city.location} block='offer'></Map>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {nearPlaces.map((nearPlace) => <OfferCard offer={nearPlace} block={'near-places'} key={nearPlace.id} />)}
+              {nearPlacesToRender.map((nearPlace) => <OfferCard offer={nearPlace} block={'near-places'} key={nearPlace.id} />)}
             </div>
           </section>
         </div>

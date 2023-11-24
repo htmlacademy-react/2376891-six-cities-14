@@ -4,20 +4,21 @@ export const MAX_REVIEWS_COUNT = 10;
 export const TIMEOUT_SHOW_ERROR = 2000;
 export const DEFAULT_CITY = 'Paris';
 
-export const cities = [
+export const CityName = [
   'Paris',
   'Cologne',
   'Brussels',
   'Amsterdam',
   'Hamburg',
   'Dusseldorf',
-];
+] as const;
 
 export enum AppRoute {
   Root = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer',
+  Offer = '/offers',
+  NotFound = '/404',
 }
 
 export enum AuthorizationStatus {
@@ -26,23 +27,26 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum SortOption {
-  Popular = 'Popular',
-  LowToHigh = 'Price: low to high',
-  HighToLow = 'Price: high to low',
-  TopRatedFirst = 'Top rated first',
-}
+export const SortingOption = {
+  Popular: 'Popular',
+  LowToHigh: 'Price: low to high',
+  HighToLow: 'Price: high to low',
+  TopRatedFirst: 'Top rated first',
+} as const;
 
 export enum APIRoute {
   Offers = '/offers',
+  Offer = '/offers/',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments/',
+  Favorite = '/favorite',
 }
 
 export const Rating = {
-  '1': 'terribly',
-  '2': 'badly',
-  '3': 'not bad',
-  '4': 'good',
   '5': 'perfect',
+  '4': 'good',
+  '3': 'not bad',
+  '2': 'badly',
+  '1': 'terribly',
 };

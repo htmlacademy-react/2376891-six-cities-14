@@ -3,22 +3,26 @@ import {
   setActiveCity,
   loadOffers,
   loadOffer,
-  // loadNearPlaces,
-  // loadReviews,
+  loadNearPlaces,
+  loadReviews,
   dropOffer,
   loadFavorites,
   setSortType,
   requireAuthorization,
   setError,
-  setOffersDataLoadingStatus
+  setOffersLoadingStatus,
+  setOfferLoadingStatus,
+  setNewReviewPostingStatus,
+  setUser
 } from './action';
 import { AuthorizationStatus, DEFAULT_CITY } from '../const';
 import { TOffer, TOffers } from '../types/offer';
 import { TReviews } from '../types/review';
-import { SortOption } from '../const';
+import { SortingOption } from '../const';
+import { TUserData } from '../types/user-data';
 
 type TInitialState = {
-  activeCity: string | null;
+  activeCity: string;
   offers: TOffers;
   offer: null | TOffer;
   nearPlaces: TOffers;
@@ -26,8 +30,11 @@ type TInitialState = {
   favorites: TOffers;
   sortType: string | null;
   authorizationStatus: AuthorizationStatus;
+  user: TUserData | null;
   error: string | null;
-  isOffersDataLoading: boolean;
+  isOffersLoading: boolean;
+  isOfferLoading: boolean;
+  isNewReviewPosted: boolean;
 }
 
 const initialState: TInitialState = {
@@ -37,10 +44,13 @@ const initialState: TInitialState = {
   nearPlaces: [],
   reviews: [],
   favorites: [],
-  sortType: SortOption.Popular,
+  sortType: SortingOption.Popular,
   authorizationStatus: AuthorizationStatus.Unknown,
+  user: null,
   error: null,
-  isOffersDataLoading: false,
+  isOffersLoading: false,
+  isOfferLoading: false,
+  isNewReviewPosted: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -52,17 +62,18 @@ const reducer = createReducer(initialState, (builder) => {
       state.offers = action.payload;
     })
     .addCase(loadOffer, (state, action) => {
-      state.offer = state.offers.find((offer) => offer.id === action.payload) ?? null;
+      state.offer = action.payload;
     })
-    // .addCase(loadNearPlaces, (state, action) => {
-    //   state.nearPlaces = offers.filter((offer) => offer.id !== action.payload);
-    // })
-    // .addCase(loadReviews, (state) => {
-    //   state.reviews = reviews;
-    // })
+    .addCase(loadNearPlaces, (state, action) => {
+      state.nearPlaces = action.payload;
+    })
+    .addCase(loadReviews, (state, action) => {
+      state.reviews = action.payload;
+    })
     .addCase(dropOffer, (state) => {
       state.offer = null;
       state.nearPlaces = [];
+      state.reviews = [];
     })
     .addCase(loadFavorites, (state) => {
       state.favorites = state.offers.filter((offer) => offer.isFavorite);
@@ -73,11 +84,20 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
+    .addCase(setUser, (state, action) => {
+      state.user = action.payload;
+    })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
-    .addCase(setOffersDataLoadingStatus, (state, action) => {
-      state.isOffersDataLoading = action.payload;
+    .addCase(setOffersLoadingStatus, (state, action) => {
+      state.isOffersLoading = action.payload;
+    })
+    .addCase(setOfferLoadingStatus, (state, action) => {
+      state.isOfferLoading = action.payload;
+    })
+    .addCase(setNewReviewPostingStatus, (state, action) => {
+      state.isNewReviewPosted = action.payload;
     });
 });
 

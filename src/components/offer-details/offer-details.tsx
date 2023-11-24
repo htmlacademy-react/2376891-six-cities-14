@@ -3,18 +3,14 @@ import ReviewsList from '../reviews-list/reviews-list';
 import { Fragment } from 'react';
 import { OFFER_IMAGES_COUNT } from '../../const';
 import { getRatingWidth, capitalize, addPluralEnding } from '../../utils/common';
-import { useAppSelector } from '../../hooks';
 
 type TOfferDetailsProps = {
   offer: TOffer;
 }
 
 function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
-  // console.log(offer);
   const { title, images, isPremium, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
   const { name, avatarUrl, isPro } = host;
-
-  const reviews = useAppSelector((state) => state.reviews);
 
   return (
     <Fragment>
@@ -92,7 +88,7 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
               </p>
             </div>
           </div>
-          <ReviewsList reviews={reviews} />
+          <ReviewsList />
         </div>
       </div>
     </Fragment>

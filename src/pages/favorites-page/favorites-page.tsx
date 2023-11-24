@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import { TOffers } from '../../types/offer';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { useEffect } from 'react';
-import { loadOffers, loadFavorites } from '../../store/action';
+import { useAppSelector } from '../../hooks';
+// import { useEffect } from 'react';
+// import { loadOffers, loadFavorites } from '../../store/action';
 import { Link } from 'react-router-dom';
 
 function getFavoritesList(favoritesOffers: TOffers) {
@@ -44,14 +44,14 @@ function getFavoritesList(favoritesOffers: TOffers) {
 }
 
 function FavoritesPage(): JSX.Element {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const favoritesOffers = useAppSelector((state) => state.favorites);
   const favoritesByCity = getFavoritesList(favoritesOffers);
 
-  useEffect(() => {
-    dispatch(loadOffers());
-    dispatch(loadFavorites());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(loadOffers());
+  //   dispatch(loadFavorites());
+  // }, [dispatch]);
 
   return (
     <div className="page">

@@ -1,14 +1,14 @@
-import { TReview } from '../../types/review';
 import ReviewCard from '../card/review-card';
 import ReviewForm from '../review-form/review-form';
+import { useAppSelector } from '../../hooks';
 import { MAX_REVIEWS_COUNT } from '../../const';
+import { AuthorizationStatus } from '../../const';
 
-type TReviewsListProps = {
-  reviews: TReview[];
-}
+function ReviewsList() {
+  const reviews = useAppSelector((state) => state.reviews);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
-function ReviewsList({ reviews }: TReviewsListProps) {
-  const reviewsToRender = [...reviews].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_REVIEWS_COUNT);
+  const reviewsToRender = reviews.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_REVIEWS_COUNT);
 
   return (
     <section className="offer__reviews reviews">
@@ -16,7 +16,7 @@ function ReviewsList({ reviews }: TReviewsListProps) {
       <ul className="reviews__list">
         {reviewsToRender.map((review) => (<ReviewCard review={review} key={review.id} />))}
       </ul>
-      <ReviewForm />
+      {authorizationStatus === AuthorizationStatus.Auth && <ReviewForm /> }
     </section>
   );
 }

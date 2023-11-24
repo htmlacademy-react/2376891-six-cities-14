@@ -6,8 +6,8 @@ import ErrorMessage from './components/error-message/error-message.tsx';
 import { store } from './store/index.ts';
 import { fetchOffersAction, checkAuthAction } from './store/api-actions.ts';
 
-store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
+store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
