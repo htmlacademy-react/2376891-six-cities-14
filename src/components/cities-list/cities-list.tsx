@@ -4,12 +4,6 @@ import { CityName } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setActiveCity } from '../../store/action';
 
-// type TCitiesList = {
-//   cities: string[];
-//   onCityClick: (cityName: string | null) => void;
-// }
-
-// function CitiesList({ cities, onCityClick }: TCitiesList): JSX.Element {
 function CitiesList(): JSX.Element {
   const dispatch = useAppDispatch();
 

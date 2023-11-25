@@ -1,9 +1,6 @@
 import OfferCard from '../card/offer-card';
 import { TOffers, TOffer } from '../../types/offer';
 import { addPluralEnding, sortOffersToHigh, sortOffersToLow, sortOffersByRating } from '../../utils/common';
-// import { useState } from 'react';
-// import { useAppSelector } from '../../hooks';
-// import { SortOption } from '../../const';
 import SortOptions from '../sort-options/sort-options';
 import Map from '../map/map';
 import { useAppSelector } from '../../hooks';
@@ -13,9 +10,6 @@ import {useState} from 'react';
 type TCitiesProps = {
   offersByCity: TOffers;
   activeCity: string;
-  // selectedCity: string | null;
-  // onOfferHover: (offerId: string) => void;
-  // children: JSX.Element[];
 }
 
 function getSortedOffers(sortType: string | null, offersByCity: TOffers): TOffers {

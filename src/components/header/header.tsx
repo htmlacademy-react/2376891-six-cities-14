@@ -5,10 +5,6 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import React, {MouseEvent} from 'react';
 import { logoutAction } from '../../store/api-actions';
 
-// type THeaderProps = {
-//   authorizationStatus: AuthorizationStatus;
-// }
-
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const favoritesOffers = useAppSelector((state) => state.favorites);

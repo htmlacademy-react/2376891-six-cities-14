@@ -16,15 +16,13 @@ export const loadFavorites = createAction('favorites/loadFavorites');
 
 export const loadReviews = createAction<TReviews>('reviews/loadReviews');
 
-export const setActiveCity = createAction<string>('offers/setActiveCity');
+export const setActiveCity = createAction<string | null>('offers/setActiveCity');
 
 export const setSortType = createAction<string | null>('sortTypes/setSortType');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const setUser = createAction<TUserData | null>('user/setUser');
-
-export const setError = createAction<string | null>('page/setError');
 
 export const setOffersLoadingStatus = createAction<boolean>('offers/setOffersLoadingStatus');
 

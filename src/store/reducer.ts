@@ -9,7 +9,6 @@ import {
   loadFavorites,
   setSortType,
   requireAuthorization,
-  setError,
   setOffersLoadingStatus,
   setOfferLoadingStatus,
   setNewReviewPostingStatus,
@@ -31,7 +30,6 @@ type TInitialState = {
   sortType: string | null;
   authorizationStatus: AuthorizationStatus;
   user: TUserData | null;
-  error: string | null;
   isOffersLoading: boolean;
   isOfferLoading: boolean;
   isNewReviewPosted: boolean;
@@ -47,7 +45,6 @@ const initialState: TInitialState = {
   sortType: SortingOption.Popular,
   authorizationStatus: AuthorizationStatus.Unknown,
   user: null,
-  error: null,
   isOffersLoading: false,
   isOfferLoading: false,
   isNewReviewPosted: false,
@@ -86,9 +83,6 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setUser, (state, action) => {
       state.user = action.payload;
-    })
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
     })
     .addCase(setOffersLoadingStatus, (state, action) => {
       state.isOffersLoading = action.payload;

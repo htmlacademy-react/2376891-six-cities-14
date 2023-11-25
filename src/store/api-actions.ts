@@ -10,31 +10,19 @@ import {
   loadReviews,
   requireAuthorization,
   setUser,
-  setError,
   setOffersLoadingStatus,
   setOfferLoadingStatus,
   setNewReviewPostingStatus,
   redirectToRoute
 } from './action';
 import { saveToken, dropToken } from '../services/token';
-import { APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR } from '../const';
+import { APIRoute, AuthorizationStatus, AppRoute } from '../const';
 import { TLoginData } from '../types/login-data';
 import { TUserData } from '../types/user-data';
-import { store } from '.';
 
 type TExtra = {
   extra: AxiosInstance;
 }
-
-export const clearErrorAction = createAsyncThunk(
-  'error/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR,
-    );
-  },
-);
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, TExtra>(
   'data/fetchOffers',
