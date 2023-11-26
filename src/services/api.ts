@@ -1,12 +1,9 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import { toast } from 'react-toastify';
 import { getToken } from './token';
-import { processErrorHandle } from './process-error-handle';
-
-type DetailMessageType = {
-  type: string;
-  message: string;
-}
+import browserHistory from '../browser-history';
+import { AppRoute } from '../const';
 
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -39,11 +36,13 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<DetailMessageType>) => {
-      if (error.response && shouldDisplayError(error.response)) {
-        const detailMessage = (error.response.data);
+    (error: AxiosError<{message: string}>) => {
+      if (error.response?.status === StatusCodes.NOT_FOUND) {
+        browserHistory.push(AppRoute.NotFound);
+      }
 
-        processErrorHandle(detailMessage.message);
+      if (error.response && shouldDisplayError(error.response)) {
+        toast.warn(error.response.data.message);
       }
 
       throw error;

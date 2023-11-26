@@ -1,27 +1,33 @@
 import { createAction } from '@reduxjs/toolkit';
 import { TOffer, TOffers } from '../types/offer';
+import { TReviews } from '../types/review';
 import { AppRoute, AuthorizationStatus } from '../const';
+import { TUserData } from '../types/user-data';
 
-export const setActiveCity = createAction<string | null>('setActiveCity');
+export const loadOffers = createAction<TOffers>('offers/loadOffers');
 
-export const loadOffers = createAction<TOffers>('offers/fetchOffers');
-
-export const loadOffer = createAction<TOffer['id']>('offer/fetchOffer');
-
-export const loadNearPlaces = createAction<TOffer['id']>('nearPlaces/fetchNearPlaces');
-
-export const loadReviews = createAction('reviews/fetchReviews');
+export const loadOffer = createAction<TOffer>('offers/loadOffer');
 
 export const dropOffer = createAction('offer/dropOffer');
 
-export const loadFavorites = createAction('favorites/fetchFavorites');
+export const loadNearPlaces = createAction<TOffers>('nearPlaces/loadNearPlaces');
+
+export const loadFavorites = createAction('favorites/loadFavorites');
+
+export const loadReviews = createAction<TReviews>('reviews/loadReviews');
+
+export const setActiveCity = createAction<string | null>('offers/setActiveCity');
 
 export const setSortType = createAction<string | null>('sortTypes/setSortType');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
-export const setError = createAction<string | null>('error/setError');
+export const setUser = createAction<TUserData | null>('user/setUser');
 
-export const setOffersDataLoadingStatus = createAction<boolean>('offers/setOffersDataLoadingStatus');
+export const setOffersLoadingStatus = createAction<boolean>('offers/setOffersLoadingStatus');
+
+export const setOfferLoadingStatus = createAction<boolean>('offer/setOfferLoadingStatus');
+
+export const setNewReviewPostingStatus = createAction<boolean>('reviews/setNewReviewPostingStatus');
 
 export const redirectToRoute = createAction<AppRoute>('data/redirectToRoute');

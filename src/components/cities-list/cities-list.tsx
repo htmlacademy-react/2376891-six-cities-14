@@ -1,20 +1,24 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { CityName } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { setActiveCity } from '../../store/action';
 
-type TCitiesList = {
-  cities: string[];
-  onCityClick: (cityName: string | null) => void;
-}
+function CitiesList(): JSX.Element {
+  const dispatch = useAppDispatch();
 
-function CitiesList({ cities, onCityClick }: TCitiesList): JSX.Element {
+  const handleCityClick = (cityName: string | null) => {
+    dispatch(setActiveCity(cityName));
+  };
+
   return (
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {cities.map((city) => (
+          {CityName.map((city) => (
             <li className="locations__item" key={city} onClick={(evt: MouseEvent<HTMLLIElement>) => {
               evt.preventDefault();
-              onCityClick((evt.target as HTMLElement).textContent);
+              handleCityClick((evt.target as HTMLElement).textContent);
             }}
             >
               <Link className="locations__item-link tabs__item" to="#">

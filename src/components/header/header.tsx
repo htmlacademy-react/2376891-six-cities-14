@@ -5,14 +5,11 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import React, {MouseEvent} from 'react';
 import { logoutAction } from '../../store/api-actions';
 
-// type THeaderProps = {
-//   authorizationStatus: AuthorizationStatus;
-// }
-
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const favoritesOffers = useAppSelector((state) => state.favorites);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const userData = useAppSelector((state) => state.user);
 
   const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
@@ -29,16 +26,21 @@ function Header(): JSX.Element {
             <ul className="header__nav-list">
               <li className="header__nav-item user">
                 <Link className="header__nav-link header__nav-link--profile" to="#">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
                   {authorizationStatus === AuthorizationStatus.NoAuth ? (
-                    <Link to={AppRoute.Login} >
-                      <span className="header__login">Sign in</span>
-                    </Link>
+                    <React.Fragment>
+                      <div className="header__avatar-wrapper user__avatar-wrapper">
+                      </div>
+                      <Link to={AppRoute.Login} >
+                        <span className="header__login">Sign in</span>
+                      </Link>
+                    </React.Fragment>
                   ) : (
                     <React.Fragment>
+                      <div className="header__avatar-wrapper user__avatar-wrapper">
+                        <img className="header__avatar user__avatar" src={userData?.avatarUrl} width="54" height="54" alt="Reviews avatar" />
+                      </div>
                       <Link to={AppRoute.Favorites}>
-                        <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                        <span className="header__user-name user__name">{userData?.email}</span>
                       </Link>
                       <span className="header__favorite-count">{favoritesOffers.length}</span>
                     </React.Fragment>

@@ -1,4 +1,4 @@
-import { SortOption } from '../../const';
+import { SortingOption } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { MouseEvent } from 'react';
 import { setSortType } from '../../store/action';
@@ -46,7 +46,7 @@ function SortOptions(): JSX.Element {
             setIsOpened(false);
           }}
         >
-          {Object.values(SortOption).map((type: string) =>
+          {Object.values(SortingOption).map((type: string) =>
             (<li className={`places__option ${sortType === type ? 'places__option--active' : ''}`} key={type} tabIndex={0} >{type}</li>))}
         </ul>
       )}

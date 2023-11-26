@@ -15,7 +15,11 @@ function OfferCard({offer, onCardMouseEnter, onCardMouseLeave, block}: TOfferPro
   const { price, isPremium, type, id, previewImage, title, rating } = offer;
 
   return (
-    <article className={`${block}__card place-card`} onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave} >
+    <article
+      className={`${block}__card place-card`}
+      onMouseEnter={block !== 'near-places' ? onCardMouseEnter : undefined}
+      onMouseLeave={block !== 'near-places' ? onCardMouseLeave : undefined}
+    >
       {isPremium ?
         (
           <div className="place-card__mark">
@@ -23,7 +27,7 @@ function OfferCard({offer, onCardMouseEnter, onCardMouseLeave, block}: TOfferPro
           </div>
         ) : ''}
       <div className={`${block}__image-wrapper place-card__image-wrapper`} >
-        <Link to={`${AppRoute.Offer}/${id}`}>
+        <Link to='#'>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
         </Link>
       </div>
