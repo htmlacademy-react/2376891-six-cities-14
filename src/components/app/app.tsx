@@ -1,24 +1,35 @@
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import MainPage from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import ProtectedRoute from '../protected-route/protected-route';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import LoadingPage from '../../pages/loading-screen/loading-screen';
+import ErrorPage from '../../pages/error-page/error-page';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import { getAuthorizationStatus, getAuthCheckedStatus } from '../../store/user-process/selectors';
+import { getOffersLoadingStatus, getErrorStatus } from '../../store/data-process/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
+  const hasError = useAppSelector(getErrorStatus);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+  if (!isAuthChecked || isOffersDataLoading) {
     return (
-      <LoadingScreen />
+      <LoadingPage />
+    );
+  }
+
+  if (hasError) {
+    return (
+      <ErrorPage />
     );
   }
 

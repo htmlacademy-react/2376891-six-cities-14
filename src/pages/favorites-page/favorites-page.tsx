@@ -5,6 +5,7 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { useAppSelector } from '../../hooks';
 import { Link } from 'react-router-dom';
+import { getFavorites } from '../../store/data-process/selectors';
 
 function getFavoritesList(favoritesOffers: TOffers) {
   const favoriteCity = new Set<string>();
@@ -42,7 +43,7 @@ function getFavoritesList(favoritesOffers: TOffers) {
 }
 
 function FavoritesPage(): JSX.Element {
-  const favoritesOffers = useAppSelector((state) => state.favorites);
+  const favoritesOffers = useAppSelector(getFavorites);
   const favoritesByCity = getFavoritesList(favoritesOffers);
 
   return (

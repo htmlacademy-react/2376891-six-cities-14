@@ -4,12 +4,14 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import React, {MouseEvent} from 'react';
 import { logoutAction } from '../../store/api-actions';
+import { getFavorites } from '../../store/data-process/selectors';
+import { getAuthorizationStatus, getUser } from '../../store/user-process/selectors';
 
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
-  const favoritesOffers = useAppSelector((state) => state.favorites);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const userData = useAppSelector((state) => state.user);
+  const favoritesOffers = useAppSelector(getFavorites);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const userData = useAppSelector(getUser);
 
   const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();

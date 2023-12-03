@@ -1,35 +1,28 @@
-import { MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
-import { CityName } from '../../const';
-import { useAppDispatch } from '../../hooks';
-import { setActiveCity } from '../../store/action';
+import { TOffers } from '../../types/offer';
+import OfferCard from '../card/offer-card';
+import { memo } from 'react';
 
-function CitiesList(): JSX.Element {
-  const dispatch = useAppDispatch();
+type TCitiesListProps = {
+  sortedOffers: TOffers;
+  onCityCardMouseEnter: (offerId: string) => void;
+  onCityCardMouseLeave: () => void;
+}
 
-  const handleCityClick = (cityName: string | null) => {
-    dispatch(setActiveCity(cityName));
-  };
-
+function CitiesList({sortedOffers, onCityCardMouseEnter, onCityCardMouseLeave}: TCitiesListProps): JSX.Element {
   return (
-    <div className="tabs">
-      <section className="locations container">
-        <ul className="locations__list tabs__list">
-          {CityName.map((city) => (
-            <li className="locations__item" key={city} onClick={(evt: MouseEvent<HTMLLIElement>) => {
-              evt.preventDefault();
-              handleCityClick((evt.target as HTMLElement).textContent);
-            }}
-            >
-              <Link className="locations__item-link tabs__item" to="#">
-                <span>{city}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+    <div className="cities__places-list places__list tabs__content">
+      {(sortedOffers) &&
+        sortedOffers.map((offer) => (
+          <OfferCard
+            offer={offer}
+            key={offer.id}
+            onCardMouseEnter={() => onCityCardMouseEnter(offer.id)}
+            onCardMouseLeave={onCityCardMouseLeave}
+            block={'cities'}
+          />)
+        )}
     </div>
   );
 }
 
-export default CitiesList;
+export default memo(CitiesList, (prevProps, nextProps) => prevProps.sortedOffers === nextProps.sortedOffers);

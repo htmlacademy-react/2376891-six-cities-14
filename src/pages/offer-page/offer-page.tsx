@@ -6,19 +6,20 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import OfferCard from '../../components/card/offer-card';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
-import LoadingScreen from '../loading-screen/loading-screen';
+import LoadingPage from '../loading-screen/loading-screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {useEffect} from 'react';
-import { dropOffer } from '../../store/action';
+import { dropOffer } from '../../store/app-process/app-process';
+import { getOfferLoadingStatus, getOffer, getNearPlaces } from '../../store/data-process/selectors';
 import { fetchOfferAction, fetchNearPlacesAction, fetchReviewsAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
 
-  const isOfferLoading = useAppSelector((state) => state.isOfferLoading);
-  const offer = useAppSelector((state) => state.offer);
-  const nearPlaces = useAppSelector((state) => state.nearPlaces);
+  const isOfferLoading = useAppSelector(getOfferLoadingStatus);
+  const offer = useAppSelector(getOffer);
+  const nearPlaces = useAppSelector(getNearPlaces);
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function OfferPage(): JSX.Element {
   }, [id, dispatch]);
 
   if (isOfferLoading) {
-    return <LoadingScreen />;
+    return <LoadingPage />;
   }
 
   if (!offer) {
@@ -52,7 +53,7 @@ function OfferPage(): JSX.Element {
       <main className="page__main page__main--offer">
         <section className="offer">
           <OfferDetails offer={offer} />
-          <Map offers={nearOffersForMap} selectedOffer={offer} location={offer.city.location} block='offer'></Map>
+          <Map offers={nearOffersForMap} selectedOffer={offer} location={offer.city.location} block='offer' />
         </section>
         <div className="container">
           <section className="near-places places">

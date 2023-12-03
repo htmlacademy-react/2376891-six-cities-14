@@ -42,6 +42,12 @@ export enum APIRoute {
   Favorite = '/favorite',
 }
 
+export enum NameSpace {
+  Data = 'DATA',
+  User = 'USER',
+  App = 'APP',
+}
+
 export const Rating = {
   '5': 'perfect',
   '4': 'good',

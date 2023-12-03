@@ -1,13 +1,14 @@
 import { SortingOption } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { MouseEvent } from 'react';
-import { setSortType } from '../../store/action';
+import { setSortType } from '../../store/app-process/app-process';
 import { useState, KeyboardEvent } from 'react';
+import { getSortType } from '../../store/app-process/selectors';
 
 function SortOptions(): JSX.Element {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const sortType = useAppSelector((state) => state.sortType);
+  const sortType = useAppSelector(getSortType);
 
   const iconStyle = {
     transform: `translateY(-50%) ${isOpened ? 'rotate(180deg)' : ''}`,

@@ -1,7 +1,7 @@
-function LoadingScreen(): JSX.Element {
+function LoadingPage(): JSX.Element {
   return (
     <p>Loading ...</p>
   );
 }
 
-export default LoadingScreen;
+export default LoadingPage;
