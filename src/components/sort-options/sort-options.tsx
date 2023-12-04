@@ -2,7 +2,7 @@ import { SortingOption } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { MouseEvent } from 'react';
 import { setSortType } from '../../store/app-process/app-process';
-import { useState, KeyboardEvent } from 'react';
+import { useState, KeyboardEvent, memo } from 'react';
 import { getSortType } from '../../store/app-process/selectors';
 
 function SortOptions(): JSX.Element {
@@ -55,4 +55,4 @@ function SortOptions(): JSX.Element {
   );
 }
 
-export default SortOptions;
+export default memo(SortOptions);

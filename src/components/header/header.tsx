@@ -15,7 +15,6 @@ function Header(): JSX.Element {
 
   const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-
     dispatch(logoutAction());
   };
 
@@ -47,7 +46,6 @@ function Header(): JSX.Element {
                       <span className="header__favorite-count">{favoritesOffers.length}</span>
                     </Fragment>
                   )}
-
                 </Link>
               </li>
               {authorizationStatus === AuthorizationStatus.Auth && (

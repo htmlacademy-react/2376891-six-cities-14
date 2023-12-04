@@ -1,11 +1,12 @@
 import { TOffer } from '../../types/offer';
-import { AppRoute } from '../../const';
-import { Link } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { Link, useNavigate } from 'react-router-dom';
 import { capitalize } from '../../utils/common';
 import { getRatingWidth } from '../../utils/common';
 import { addOfferFavoriteStatus } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { MouseEvent, useState } from 'react';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 type TOfferProps = {
   offer: TOffer;
@@ -17,15 +18,21 @@ type TOfferProps = {
 function OfferCard({ offer, onCardMouseEnter, onCardMouseLeave, block }: TOfferProps): JSX.Element {
   const { price, isPremium, type, id, previewImage, title, rating, isFavorite } = offer;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [isOfferFavorite, setOfferFavoriteStatus] = useState<boolean>(isFavorite);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const handleFavoriteClick = (evt: MouseEvent<HTMLOrSVGElement>) => {
     evt.preventDefault();
-    dispatch(addOfferFavoriteStatus({
-      id: id,
-      favoriteStatus: Number(!isOfferFavorite),
-    }));
-    setOfferFavoriteStatus(!isOfferFavorite);
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+    } else {
+      dispatch(addOfferFavoriteStatus({
+        id: id,
+        favoriteStatus: Number(!isOfferFavorite),
+      }));
+      setOfferFavoriteStatus(!isOfferFavorite);
+    }
   };
 
   return (

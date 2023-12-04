@@ -70,14 +70,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Favorites}
-            element={
-              <ProtectedRoute
-                authorizationStatus={authorizationStatus}
-                redirectTo={AppRoute.Login}
-              >
-                <FavoritesPage />
-              </ProtectedRoute>
-            }
+            element={<FavoritesPage />}
           />
           <Route
             path={`${AppRoute.Offer}/:id`}
