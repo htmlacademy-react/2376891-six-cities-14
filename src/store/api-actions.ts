@@ -40,9 +40,20 @@ export const fetchNearPlacesAction = createAsyncThunk<TOffers, TOffer['id'], TEx
 export const fetchFavoritesAction = createAsyncThunk<TOffers, undefined, TExtra>(
   'data/fetchFavorites',
   async (_arg, { extra: api }) => {
-    const { data } = await api.get<TOffers>(`${APIRoute.Offers}/favorite`);
+    const { data } = await api.get<TOffers>(`${APIRoute.Favorite}`);
     return data;
   },
+);
+
+export const addOfferFavoriteStatus = createAsyncThunk<void, {
+  id: TOffer['id'];
+  favoriteStatus: number;
+}, TExtra>(
+  'data/addOfferFavoriteStatus',
+  async ({ id, favoriteStatus }, { dispatch, extra: api }) => {
+    await api.post<TOffer['id']>(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    dispatch(fetchFavoritesAction());
+  }
 );
 
 export const fetchReviewsAction = createAsyncThunk<TReviews, TOffer['id'], TExtra>(

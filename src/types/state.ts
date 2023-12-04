@@ -19,6 +19,7 @@ export type TDataProcess = {
   isOffersLoading: boolean;
   isOfferLoading: boolean;
   hasError: boolean;
+  isOffersChanged: boolean;
 }
 
 export type TAppProcess = {

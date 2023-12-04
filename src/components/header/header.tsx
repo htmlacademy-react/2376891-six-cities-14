@@ -2,7 +2,7 @@ import Logo from '../logo/logo';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import React, {MouseEvent} from 'react';
+import {MouseEvent, Fragment} from 'react';
 import { logoutAction } from '../../store/api-actions';
 import { getFavorites } from '../../store/data-process/selectors';
 import { getAuthorizationStatus, getUser } from '../../store/user-process/selectors';
@@ -29,15 +29,15 @@ function Header(): JSX.Element {
               <li className="header__nav-item user">
                 <Link className="header__nav-link header__nav-link--profile" to="#">
                   {authorizationStatus === AuthorizationStatus.NoAuth ? (
-                    <React.Fragment>
+                    <Fragment>
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
                       <Link to={AppRoute.Login} >
                         <span className="header__login">Sign in</span>
                       </Link>
-                    </React.Fragment>
+                    </Fragment>
                   ) : (
-                    <React.Fragment>
+                    <Fragment>
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                         <img className="header__avatar user__avatar" src={userData?.avatarUrl} width="54" height="54" alt="Reviews avatar" />
                       </div>
@@ -45,7 +45,7 @@ function Header(): JSX.Element {
                         <span className="header__user-name user__name">{userData?.email}</span>
                       </Link>
                       <span className="header__favorite-count">{favoritesOffers.length}</span>
-                    </React.Fragment>
+                    </Fragment>
                   )}
 
                 </Link>
