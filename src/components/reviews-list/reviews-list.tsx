@@ -3,10 +3,12 @@ import ReviewForm from '../review-form/review-form';
 import { useAppSelector } from '../../hooks';
 import { MAX_REVIEWS_COUNT } from '../../const';
 import { AuthorizationStatus } from '../../const';
+import { getReviews } from '../../store/data-process/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function ReviewsList() {
-  const reviews = useAppSelector((state) => state.reviews);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const reviews = useAppSelector(getReviews);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const reviewsToRender = reviews.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_REVIEWS_COUNT);
 

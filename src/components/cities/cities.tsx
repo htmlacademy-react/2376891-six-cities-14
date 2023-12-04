@@ -1,46 +1,30 @@
-import OfferCard from '../card/offer-card';
-import { TOffers, TOffer } from '../../types/offer';
-import { addPluralEnding, sortOffersToHigh, sortOffersToLow, sortOffersByRating } from '../../utils/common';
+import { TOffers } from '../../types/offer';
+import { addPluralEnding, getSortedOffers } from '../../utils/common';
 import SortOptions from '../sort-options/sort-options';
 import Map from '../map/map';
 import { useAppSelector } from '../../hooks';
-import { SortingOption } from '../../const';
-import {useState} from 'react';
+import { useCities } from '../../hooks/use-cities';
+import { getSortType } from '../../store/app-process/selectors';
+import CitiesList from '../cities-list/cities-list';
 
 type TCitiesProps = {
   offersByCity: TOffers;
-  activeCity: string;
-}
-
-function getSortedOffers(sortType: string | null, offersByCity: TOffers): TOffers {
-  const sortedOffers: TOffers = [...offersByCity];
-
-  switch (sortType) {
-    case SortingOption.Popular:
-      return offersByCity;
-    case SortingOption.LowToHigh:
-      return sortedOffers.sort(sortOffersToHigh);
-    case SortingOption.HighToLow:
-      return sortedOffers.sort(sortOffersToLow);
-    case SortingOption.TopRatedFirst:
-      return sortedOffers.sort(sortOffersByRating);
-  }
-  return sortedOffers;
+  activeCity: string | null;
 }
 
 function Cities({ offersByCity, activeCity }: TCitiesProps): JSX.Element {
-  const [selectedOffer, setSelectedOffer] = useState<TOffer | undefined>(undefined);
-  const sortType = useAppSelector((state) => state.sortType);
+  const [selectedOffer, handleSelectedOfferChange] = useCities();
+  const sortType = useAppSelector(getSortType);
   const sortedOffers = getSortedOffers(sortType, offersByCity);
   const location = offersByCity[0].city.location;
 
   const handleCardMouseEnter = (offerId: string) => {
     const currentOffer = offersByCity.find((offer) => offer.id === offerId);
-    setSelectedOffer(currentOffer);
+    handleSelectedOfferChange(currentOffer);
   };
 
   const handleCardMouseLeave = () => {
-    setSelectedOffer(undefined);
+    handleSelectedOfferChange(undefined);
   };
 
   return (
@@ -50,21 +34,10 @@ function Cities({ offersByCity, activeCity }: TCitiesProps): JSX.Element {
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{offersByCity.length} place{addPluralEnding(offersByCity.length)} to stay in {activeCity}</b>
           <SortOptions />
-          <div className="cities__places-list places__list tabs__content">
-            {(offersByCity) &&
-              offersByCity.map((offer) => (
-                <OfferCard
-                  offer={offer}
-                  key={offer.id}
-                  onCardMouseEnter={() => handleCardMouseEnter(offer.id)}
-                  onCardMouseLeave={handleCardMouseLeave}
-                  block={'cities'}
-                />)
-              )}
-          </div>
+          <CitiesList sortedOffers={sortedOffers} onCityCardMouseEnter={handleCardMouseEnter} onCityCardMouseLeave={handleCardMouseLeave} />
         </section>
         <div className="cities__right-section">
-          <Map offers={sortedOffers} selectedOffer={selectedOffer} location={location} block='cities'></Map>
+          <Map offers={offersByCity} selectedOffer={selectedOffer} location={location} block='cities'></Map>
         </div>
       </div>
     </div>

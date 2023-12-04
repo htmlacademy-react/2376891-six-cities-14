@@ -1,4 +1,5 @@
 import { TOffer, TOffers } from '../types/offer';
+import { SortingOption } from '../const';
 
 function addPluralEnding(count: number) {
   return count !== 1 ? 's' : '';
@@ -28,4 +29,29 @@ function sortOffersByRating(offerA: TOffer, offerB: TOffer): number {
   return offerB.rating - offerA.rating;
 }
 
-export { addPluralEnding, capitalize, getRatingWidth, getOffersByCity, sortOffersToHigh, sortOffersToLow, sortOffersByRating };
+function getSortedOffers(sortType: string | null, offersByCity: TOffers): TOffers {
+  const sortedOffers: TOffers = [...offersByCity];
+
+  switch (sortType) {
+    case SortingOption.Popular:
+      return offersByCity;
+    case SortingOption.LowToHigh:
+      return sortedOffers.sort(sortOffersToHigh);
+    case SortingOption.HighToLow:
+      return sortedOffers.sort(sortOffersToLow);
+    case SortingOption.TopRatedFirst:
+      return sortedOffers.sort(sortOffersByRating);
+  }
+  return sortedOffers;
+}
+
+export {
+  addPluralEnding,
+  capitalize,
+  getRatingWidth,
+  getOffersByCity,
+  sortOffersToHigh,
+  sortOffersToLow,
+  sortOffersByRating,
+  getSortedOffers
+};

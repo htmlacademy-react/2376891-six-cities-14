@@ -3,6 +3,7 @@ import { Icon, Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
 import { TOffer } from '../../types/offer';
+import { memo } from 'react';
 
 type TMapProps = {
   offers: TOffer[];
@@ -69,4 +70,7 @@ function Map({ offers, selectedOffer, location, block }: TMapProps): JSX.Element
   );
 }
 
-export default Map;
+export default memo(Map, (prevProps, nextProps) =>
+  prevProps.offers === nextProps.offers &&
+  prevProps.selectedOffer === nextProps.selectedOffer &&
+  prevProps.location === nextProps.location);

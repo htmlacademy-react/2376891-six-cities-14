@@ -1,28 +1,27 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Rating } from '../../const';
-import { Fragment } from 'react';
-import { addNewReviewAction, fetchReviewsAction } from '../../store/api-actions';
+import { addNewReviewAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useFormData } from '../../hooks/use-form-data';
+import RatingItem from '../rating-item/rating-item';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import { getOffer, getNewReviewPostingStatus } from '../../store/data-process/selectors';
 
 function ReviewForm(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const currentOffer = useAppSelector((state) => state.offer);
-  const isNewReviewPosted = useAppSelector((state) => state.isNewReviewPosted);
+  const currentOffer = useAppSelector(getOffer);
+  const isNewReviewPosted = useAppSelector(getNewReviewPostingStatus);
 
   const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState({
-    comment: '',
-    rating: 0,
-  });
+  const [formData, handleFormDataChange] = useFormData();
 
   const isFormDataValid = formData.rating > 0 && formData.comment.length >= 50 && formData.comment.length <= 300;
 
   const resetForm = () => {
     if (isNewReviewPosted && isFormDataValid) {
-      setFormData({ ...formData, comment: '', rating: 0 });
+      handleFormDataChange('', 0);
     }
   };
 
@@ -35,11 +34,11 @@ function ReviewForm(): JSX.Element {
   }
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, rating: Number(evt.target.value) });
+    handleFormDataChange(null, Number(evt.target.value));
   };
 
   const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData({ ...formData, comment: evt.target.value });
+    handleFormDataChange(evt.target.value, null);
   };
 
   const handleReviewSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -47,7 +46,6 @@ function ReviewForm(): JSX.Element {
     setIsFormDisabled(true);
     dispatch(addNewReviewAction([currentOffer.id, formData]));
     setIsFormDisabled(false);
-    dispatch(fetchReviewsAction(currentOffer.id));
   };
 
   return (
@@ -55,23 +53,7 @@ function ReviewForm(): JSX.Element {
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {Object.entries(Rating).reverse().map(([score, title]) => (
-          <Fragment key={score}>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              value={score}
-              id={`${score}-stars`}
-              type="radio"
-              onChange={handleRatingChange}
-              checked={score === String(formData.rating)}
-              disabled={isFormDisabled}
-            />
-            <label htmlFor={`${score}-stars`} className="reviews__rating-label form__rating-label" title={title}>
-              <svg className="form__star-image" width="37" height="33">
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </Fragment>
+          <RatingItem key={score} score={score} title={title} formData={formData} isFormDisabled={isFormDisabled} onRatingChangeHandle={handleRatingChange} />
         ))}
       </div>
       <textarea
