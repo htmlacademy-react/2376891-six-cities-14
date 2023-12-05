@@ -8,7 +8,7 @@ type TCitiesListProps = {
   onCityCardMouseLeave: () => void;
 }
 
-function CitiesList({sortedOffers, onCityCardMouseEnter, onCityCardMouseLeave}: TCitiesListProps): JSX.Element {
+function CitiesList({ sortedOffers, onCityCardMouseEnter, onCityCardMouseLeave }: TCitiesListProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
       {(sortedOffers) &&

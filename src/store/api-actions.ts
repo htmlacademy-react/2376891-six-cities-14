@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TOffers, TOffer } from '../types/offer';
-import { TReviews } from '../types/review';
+import { TReview, TReviews } from '../types/review';
 import { TReviewToPost } from '../types/review-to-post';
+import { TLoginData } from '../types/login-data';
+import { TUserData } from '../types/user-data';
 import { redirectToRoute } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AppRoute } from '../const';
-import { TLoginData } from '../types/login-data';
-import { TUserData } from '../types/user-data';
 
 type TExtra = {
   extra: AxiosInstance;
@@ -16,7 +16,7 @@ type TExtra = {
 export const fetchOffersAction = createAsyncThunk<TOffers, undefined, TExtra>(
   'data/fetchOffers',
   async (_arg, { extra: api }) => {
-    const { data } = await api.get<TOffers>(APIRoute.Offers);
+    const { data } = await api.get<TOffers>(APIRoute.Offer);
     return data;
   },
 );
@@ -45,14 +45,21 @@ export const fetchFavoritesAction = createAsyncThunk<TOffers, undefined, TExtra>
   },
 );
 
-export const addOfferFavoriteStatus = createAsyncThunk<void, {
+export const changeOfferFavoriteStatus = createAsyncThunk<{
+  newFavoritesOffers: TOffers;
+  newOffers?: TOffers;
+}, {
   id: TOffer['id'];
   favoriteStatus: number;
+  newData: {
+    newFavoritesOffers: TOffers;
+    newOffers?: TOffers;
+  };
 }, TExtra>(
   'data/addOfferFavoriteStatus',
-  async ({ id, favoriteStatus }, { dispatch, extra: api }) => {
+  async ({ id, favoriteStatus, newData }, { extra: api }) => {
     await api.post<TOffer['id']>(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
-    dispatch(fetchFavoritesAction());
+    return newData;
   }
 );
 
@@ -64,11 +71,11 @@ export const fetchReviewsAction = createAsyncThunk<TReviews, TOffer['id'], TExtr
   },
 );
 
-export const addNewReviewAction = createAsyncThunk<void, [TOffer['id'], TReviewToPost], TExtra>(
+export const addNewReviewAction = createAsyncThunk<TReview, [TOffer['id'], TReviewToPost], TExtra>(
   'data/postReview',
-  async ([id, formData], { dispatch, extra: api }) => {
-    await api.post<TReviewToPost>(`${APIRoute.Comments}${id}`, formData);
-    dispatch(fetchReviewsAction(id));
+  async ([id, formData], { extra: api }) => {
+    const data = await api.post<TReview>(`${APIRoute.Comments}${id}`, formData);
+    return data.data;
   }
 );
 

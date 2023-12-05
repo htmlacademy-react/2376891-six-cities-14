@@ -1,16 +1,43 @@
-import { TOffer } from '../../types/offer';
-import ReviewsList from '../reviews-list/reviews-list';
-import { Fragment } from 'react';
-import { OFFER_IMAGES_COUNT } from '../../const';
+import { Fragment, MouseEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { TOffer, TOffers } from '../../types/offer';
+import { OFFER_IMAGES_COUNT, AuthorizationStatus, AppRoute } from '../../const';
 import { getRatingWidth, capitalize, addPluralEnding } from '../../utils/common';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import ReviewsList from '../reviews-list/reviews-list';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getFavorites } from '../../store/data-process/selectors';
+import { changeOfferFavoriteStatus } from '../../store/api-actions';
 
 type TOfferDetailsProps = {
   offer: TOffer;
 }
 
 function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
-  const { title, images, isPremium, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
+  const { id, title, images, isPremium, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
   const { name, avatarUrl, isPro } = host;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const favoritesOffers = useAppSelector(getFavorites);
+  const [isOfferFavorite, setOfferFavoriteStatus] = useState<boolean>(isFavorite);
+
+  const handleFavoriteClick = (evt: MouseEvent<HTMLOrSVGElement>) => {
+    evt.preventDefault();
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+    } else {
+      const newFavoritesOffers: TOffers = favoritesOffers.filter((favoritesOffer) => favoritesOffer.id !== offer.id);
+      dispatch(changeOfferFavoriteStatus({
+        id: id,
+        favoriteStatus: Number(!isOfferFavorite),
+        newData: {
+          newFavoritesOffers: newFavoritesOffers,
+        }
+      }));
+      setOfferFavoriteStatus(!isOfferFavorite);
+    }
+  };
 
   return (
     <Fragment>
@@ -25,15 +52,20 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
       </div>
       <div className="offer__container container">
         <div className="offer__wrapper">
-          <div className="offer__mark">
-            <span>{isPremium ? 'Premium' : ''}</span>
-          </div>
+          {isPremium && (
+            <div className="offer__mark">
+              <span>Premium</span>
+            </div>
+          )}
           <div className="offer__name-wrapper">
             <h1 className="offer__name">
               {title}
             </h1>
-            <button className={`offer__bookmark-button button ${isFavorite && 'offer__bookmark-button--active'}`} type="button">
-              <svg className="offer__bookmark-icon" width="31" height="33">
+            <button
+              className={`offer__bookmark-button button ${isOfferFavorite ? 'offer__bookmark-button--active' : ''}`}
+              type="button"
+            >
+              <svg className="offer__bookmark-icon" width="31" height="33" onClick={handleFavoriteClick}>
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
               <span className="visually-hidden">To bookmarks</span>

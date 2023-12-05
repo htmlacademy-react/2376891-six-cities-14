@@ -14,7 +14,7 @@ export const appProcess = createSlice({
   name: NameSpace.App,
   initialState,
   reducers: {
-    setActiveCity: (state, action: PayloadAction<string | null>) => {
+    setActiveCity: (state, action: PayloadAction<string>) => {
       state.activeCity = action.payload;
     },
     dropOffer: (state) => {

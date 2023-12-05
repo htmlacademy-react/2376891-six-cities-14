@@ -1,25 +1,42 @@
+import { useRef, FormEvent, MouseEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useRef, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { CityName, AppRoute } from '../../const';
+import { getRandomCity } from '../../utils/common';
 import { useAppDispatch } from '../../hooks';
-import { loginAction } from '../../store/api-actions';
 import Logo from '../../components/logo/logo';
+import { loginAction } from '../../store/api-actions';
+import { setActiveCity } from '../../store/app-process/app-process';
 
 function LoginPage(): JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
-  const dispatch = useAppDispatch();
+  const randomCity = getRandomCity(Object.values(CityName));
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (loginRef.current !== null && passwordRef.current !== null) {
-      dispatch(loginAction({
-        email: loginRef.current.value,
-        password: passwordRef.current.value
-      }));
+      const validEmail = new RegExp(/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w+)$/);
+      const validPass = new RegExp(/^(?=.*\d)(?=.*[a-z]).*$/);
+      const isValidEmail = validEmail.test(loginRef.current.value);
+      const isValidPass = validPass.test(passwordRef.current.value);
+
+      if(isValidPass && isValidEmail) {
+        dispatch(loginAction({
+          email: loginRef.current.value,
+          password: passwordRef.current.value
+        }));
+      }
     }
+  };
+
+  const handleCityClick = (evt: MouseEvent<HTMLDivElement>) => {
+    evt.preventDefault();
+    dispatch(setActiveCity(randomCity));
+    navigate(AppRoute.Root);
   };
 
   return (
@@ -70,9 +87,9 @@ function LoginPage(): JSX.Element {
             </form>
           </section>
           <section className="locations locations--login locations--current">
-            <div className="locations__item">
+            <div className="locations__item" onClick={handleCityClick}>
               <Link className="locations__item-link" to="#">
-                <span>Amsterdam</span>
+                <span>{randomCity}</span>
               </Link>
             </div>
           </section>

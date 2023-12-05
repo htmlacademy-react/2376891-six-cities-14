@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 type TCityItem = {
   onCityClick: (cityName: string | null) => void;
   city: string;
-  activeCity: string | null;
+  activeCity: string;
 }
 
 function CityItem({onCityClick, city, activeCity}: TCityItem): JSX.Element {

@@ -1,13 +1,12 @@
+import { useState, KeyboardEvent, memo, MouseEvent } from 'react';
 import { SortingOption } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { MouseEvent } from 'react';
 import { setSortType } from '../../store/app-process/app-process';
-import { useState, KeyboardEvent, memo } from 'react';
 import { getSortType } from '../../store/app-process/selectors';
 
 function SortOptions(): JSX.Element {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const [isOpened, setIsOpened] = useState<boolean>(false);
   const sortType = useAppSelector(getSortType);
 
   const iconStyle = {
@@ -38,19 +37,17 @@ function SortOptions(): JSX.Element {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      {isOpened && (
-        <ul
-          className={`places__options places__options--custom ${isOpened ? 'places__options--opened' : ''}`}
-          onClick={(evt: MouseEvent<HTMLUListElement>) => {
-            evt.preventDefault();
-            handleSortTypeClick((evt.target as HTMLElement).textContent);
-            setIsOpened(false);
-          }}
-        >
-          {Object.values(SortingOption).map((type: string) =>
-            (<li className={`places__option ${sortType === type ? 'places__option--active' : ''}`} key={type} tabIndex={0} >{type}</li>))}
-        </ul>
-      )}
+      <ul
+        className={`places__options places__options--custom ${isOpened ? 'places__options--opened' : ''}`}
+        onClick={(evt: MouseEvent<HTMLUListElement>) => {
+          evt.preventDefault();
+          handleSortTypeClick((evt.target as HTMLElement).textContent);
+          setIsOpened(false);
+        }}
+      >
+        {isOpened && Object.values(SortingOption).map((type: string) =>
+          (<li className={`places__option ${sortType === type ? 'places__option--active' : ''}`} key={type} tabIndex={0} >{type}</li>))}
+      </ul>
     </form>
   );
 }

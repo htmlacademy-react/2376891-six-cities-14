@@ -1,8 +1,8 @@
-import Logo from '../logo/logo';
+import { MouseEvent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import {MouseEvent, Fragment} from 'react';
+import Logo from '../logo/logo';
 import { logoutAction } from '../../store/api-actions';
 import { getFavorites } from '../../store/data-process/selectors';
 import { getAuthorizationStatus, getUser } from '../../store/user-process/selectors';
