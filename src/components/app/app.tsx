@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks';
-import { AppRoute } from '../../const';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import MainPage from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
@@ -14,12 +14,28 @@ import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import { getAuthorizationStatus, getAuthCheckedStatus } from '../../store/user-process/selectors';
 import { getOffersLoadingStatus, getErrorStatus } from '../../store/data-process/selectors';
+import { checkAuthAction, fetchOffersAction, fetchFavoritesAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
   const hasError = useAppSelector(getErrorStatus);
+
+  useEffect(() => {
+    if (!isAuthChecked) {
+      dispatch(checkAuthAction());
+      dispatch(fetchOffersAction());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoritesAction());
+    }
+  }, [authorizationStatus]);
 
   if (!isAuthChecked || isOffersDataLoading) {
     return (
@@ -54,14 +70,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Favorites}
-            element={
-              <ProtectedRoute
-                authorizationStatus={authorizationStatus}
-                redirectTo={AppRoute.Login}
-              >
-                <FavoritesPage />
-              </ProtectedRoute>
-            }
+            element={<FavoritesPage />}
           />
           <Route
             path={`${AppRoute.Offer}/:id`}

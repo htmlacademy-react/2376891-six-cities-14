@@ -4,6 +4,7 @@ import { TDataProcess } from '../../types/state';
 import {
   fetchOffersAction, fetchOfferAction, fetchNearPlacesAction,
   fetchFavoritesAction,
+  addOfferFavoriteStatus,
   fetchReviewsAction,
   addNewReviewAction
 } from '../api-actions';
@@ -18,6 +19,7 @@ const initialState: TDataProcess = {
   isOffersLoading: false,
   isOfferLoading: false,
   hasError: false,
+  isOffersChanged: false,
 };
 
 export const dataProcess = createSlice({
@@ -33,6 +35,7 @@ export const dataProcess = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.isOffersLoading = false;
+        state.isOffersChanged = false;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.offers = [];
@@ -59,8 +62,8 @@ export const dataProcess = createSlice({
       .addCase(fetchFavoritesAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
       })
-      .addCase(fetchFavoritesAction.rejected, (state) => {
-        state.favorites = [];
+      .addCase(addOfferFavoriteStatus.fulfilled, (state) => {
+        state.isOffersChanged = true;
       })
       .addCase(fetchReviewsAction.fulfilled, (state, action) => {
         state.reviews = action.payload;

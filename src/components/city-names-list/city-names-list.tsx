@@ -1,13 +1,22 @@
 import { CityName } from '../../const';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchOffersAction } from '../../store/api-actions';
 import { setActiveCity } from '../../store/app-process/app-process';
 import CityItem from '../city-item/city-item';
+import { getOffersChangedStatus } from '../../store/data-process/selectors';
+import { getActiveCity } from '../../store/app-process/selectors';
 
 function CityNamesList(): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const isOffersChange = useAppSelector(getOffersChangedStatus);
+  const activeCity = useAppSelector(getActiveCity);
+
   const handleCityClick = (cityName: string | null) => {
     dispatch(setActiveCity(cityName));
+    if (isOffersChange) {
+      dispatch(fetchOffersAction());
+    }
   };
 
   return (
@@ -15,7 +24,7 @@ function CityNamesList(): JSX.Element {
       <section className="locations container">
         <ul className="locations__list tabs__list">
           {CityName.map((city) => (
-            <CityItem key={city} city={city} onCityClick={handleCityClick} />
+            <CityItem key={city} city={city} activeCity={activeCity} onCityClick={handleCityClick} />
           ))}
         </ul>
       </section>
