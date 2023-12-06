@@ -10,7 +10,19 @@ function capitalize(str: string) {
 }
 
 function getRatingWidth(rating: number) {
-  return `${Math.abs(rating / 5) * 100}%`;
+  return `${Math.abs(Math.round(rating) / 5) * 100}%`;
+}
+
+function getRandomInteger(a: number, b: number) {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+
+  const aaa = Math.floor(lower + Math.random() * (upper - lower + 1));
+  return aaa;
+}
+
+function getRandomCity(cities: string[]): string {
+  return cities[getRandomInteger(0, (cities.length - 1))];
 }
 
 function getOffersByCity(offers: TOffers, city: string | null): TOffers {
@@ -49,6 +61,7 @@ export {
   addPluralEnding,
   capitalize,
   getRatingWidth,
+  getRandomCity,
   getOffersByCity,
   sortOffersToHigh,
   sortOffersToLow,

@@ -1,14 +1,14 @@
+import {useEffect} from 'react';
 import { Helmet } from 'react-helmet-async';
-import OfferDetails from '../../components/offer-details/offer-details';
 import { useParams } from 'react-router-dom';
 import { MAX_NEAR_PLACES_COUNT } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFoundPage from '../not-found-page/not-found-page';
+import OfferDetails from '../../components/offer-details/offer-details';
 import OfferCard from '../../components/card/offer-card';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import LoadingPage from '../loading-screen/loading-screen';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import {useEffect} from 'react';
 import { dropOffer } from '../../store/app-process/app-process';
 import { getOfferLoadingStatus, getOffer, getNearPlaces } from '../../store/data-process/selectors';
 import { fetchOfferAction, fetchNearPlacesAction, fetchReviewsAction } from '../../store/api-actions';

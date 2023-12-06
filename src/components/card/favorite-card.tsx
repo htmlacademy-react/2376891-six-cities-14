@@ -1,9 +1,10 @@
-import { TOffer } from '../../types/offer';
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { TOffer, TOffers } from '../../types/offer';
 import { AppRoute } from '../../const';
-import { useState, MouseEvent } from 'react';
-import { addOfferFavoriteStatus } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeOfferFavoriteStatus } from '../../store/api-actions';
+import { getFavorites } from '../../store/data-process/selectors';
 
 type TFavoriteCardProps = {
   offer: TOffer;
@@ -12,15 +13,19 @@ type TFavoriteCardProps = {
 function FavoriteCard({ offer }: TFavoriteCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const { price, isPremium, previewImage, title, type, id, isFavorite } = offer;
-  const [isOfferFavorite, setOfferFavoriteStatus] = useState<boolean>(isFavorite);
+  const favoritesOffers = useAppSelector(getFavorites);
 
   const handleFavoriteClick = (evt: MouseEvent<HTMLOrSVGElement>) => {
     evt.preventDefault();
-    dispatch(addOfferFavoriteStatus({
+    const newFavoritesOffers: TOffers = favoritesOffers.filter((favoritesOffer) => favoritesOffer.id !== offer.id);
+
+    dispatch(changeOfferFavoriteStatus({
       id: id,
-      favoriteStatus: Number(!isOfferFavorite),
+      favoriteStatus: Number(!isFavorite),
+      newData: {
+        newFavoritesOffers: newFavoritesOffers,
+      }
     }));
-    setOfferFavoriteStatus(!isOfferFavorite);
   };
 
   return (
@@ -39,7 +44,7 @@ function FavoriteCard({ offer }: TFavoriteCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`${isOfferFavorite ? 'place-card__bookmark-button--active' : ''} place-card__bookmark-button button`} type="button">
+          <button className={`${isFavorite ? 'place-card__bookmark-button--active' : ''} place-card__bookmark-button button`} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19" onClick={handleFavoriteClick}>
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

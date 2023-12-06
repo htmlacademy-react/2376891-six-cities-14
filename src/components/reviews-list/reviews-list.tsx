@@ -1,8 +1,7 @@
 import ReviewCard from '../card/review-card';
 import ReviewForm from '../review-form/review-form';
 import { useAppSelector } from '../../hooks';
-import { MAX_REVIEWS_COUNT } from '../../const';
-import { AuthorizationStatus } from '../../const';
+import { MAX_REVIEWS_COUNT, AuthorizationStatus } from '../../const';
 import { getReviews } from '../../store/data-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 

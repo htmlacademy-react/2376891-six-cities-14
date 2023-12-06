@@ -1,19 +1,19 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useCallback } from 'react';
 import { Rating } from '../../const';
-import { addNewReviewAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useFormData } from '../../hooks/use-form-data';
 import RatingItem from '../rating-item/rating-item';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import { getOffer, getNewReviewPostingStatus } from '../../store/data-process/selectors';
+import { addNewReviewAction } from '../../store/api-actions';
+import { getOffer, getNewReviewPostingStatus, getOffersChangedStatus } from '../../store/data-process/selectors';
+import { setNewReviewPostedStatus } from '../../store/data-process/data-process';
 
 function ReviewForm(): JSX.Element {
   const dispatch = useAppDispatch();
-
   const currentOffer = useAppSelector(getOffer);
   const isNewReviewPosted = useAppSelector(getNewReviewPostingStatus);
-
-  const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
+  const isOfferChangedStatus = useAppSelector(getOffersChangedStatus);
+  const ratings = Object.entries(Rating).reverse();
 
   const [formData, handleFormDataChange] = useFormData();
 
@@ -22,15 +22,12 @@ function ReviewForm(): JSX.Element {
   const resetForm = () => {
     if (isNewReviewPosted && isFormDataValid) {
       handleFormDataChange('', 0);
+      dispatch(setNewReviewPostedStatus(false));
     }
   };
 
   if (isNewReviewPosted) {
     resetForm();
-  }
-
-  if (!currentOffer) {
-    return <NotFoundPage />;
   }
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -41,19 +38,30 @@ function ReviewForm(): JSX.Element {
     handleFormDataChange(evt.target.value, null);
   };
 
-  const handleReviewSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    setIsFormDisabled(true);
-    dispatch(addNewReviewAction([currentOffer.id, formData]));
-    setIsFormDisabled(false);
-  };
+  const handleReviewSubmit = useCallback((evt: FormEvent<HTMLFormElement>) => {
+    if (currentOffer) {
+      evt.preventDefault();
+      dispatch(addNewReviewAction([currentOffer.id, formData]));
+    }
+  }, [dispatch, formData.rating, formData.comment, isFormDataValid, currentOffer]);
+
+  if (!currentOffer) {
+    return <NotFoundPage />;
+  }
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleReviewSubmit} >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {Object.entries(Rating).reverse().map(([score, title]) => (
-          <RatingItem key={score} score={score} title={title} formData={formData} isFormDisabled={isFormDisabled} onRatingChangeHandle={handleRatingChange} />
+        {ratings.map(([score, title]) => (
+          <RatingItem
+            key={score}
+            score={score}
+            title={title}
+            formData={formData.rating}
+            isFormDisabled={isOfferChangedStatus}
+            onRatingChangeHandle={handleRatingChange}
+          />
         ))}
       </div>
       <textarea
@@ -63,7 +71,7 @@ function ReviewForm(): JSX.Element {
         onChange={handleReviewChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.comment}
-        disabled={isFormDisabled}
+        disabled={isOfferChangedStatus}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -72,7 +80,7 @@ function ReviewForm(): JSX.Element {
         </p>
         <button
           className="reviews__submit form__submit button"
-          type="submit" disabled={!isFormDataValid || isFormDisabled}
+          type="submit" disabled={!isFormDataValid || isOfferChangedStatus}
         >Submit
         </button>
       </div>

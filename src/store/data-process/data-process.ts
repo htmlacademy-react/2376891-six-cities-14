@@ -1,10 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { TDataProcess } from '../../types/state';
 import {
-  fetchOffersAction, fetchOfferAction, fetchNearPlacesAction,
+  fetchOffersAction,
+  fetchOfferAction,
+  fetchNearPlacesAction,
   fetchFavoritesAction,
-  addOfferFavoriteStatus,
+  changeOfferFavoriteStatus,
   fetchReviewsAction,
   addNewReviewAction
 } from '../api-actions';
@@ -25,7 +27,14 @@ const initialState: TDataProcess = {
 export const dataProcess = createSlice({
   name: NameSpace.User,
   initialState,
-  reducers: {},
+  reducers: {
+    setOfferChangedStatus: (state, action: PayloadAction<boolean>) => {
+      state.isOffersChanged = action.payload;
+    },
+    setNewReviewPostedStatus: (state, action: PayloadAction<boolean>) => {
+      state.isNewReviewPosted = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
@@ -35,7 +44,6 @@ export const dataProcess = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.isOffersLoading = false;
-        state.isOffersChanged = false;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.offers = [];
@@ -62,8 +70,11 @@ export const dataProcess = createSlice({
       .addCase(fetchFavoritesAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
       })
-      .addCase(addOfferFavoriteStatus.fulfilled, (state) => {
-        state.isOffersChanged = true;
+      .addCase(changeOfferFavoriteStatus.fulfilled, (state, action) => {
+        state.favorites = action.payload['newFavoritesOffers'];
+        if (action.payload['newOffers']) {
+          state.offers = action.payload['newOffers'];
+        }
       })
       .addCase(fetchReviewsAction.fulfilled, (state, action) => {
         state.reviews = action.payload;
@@ -72,11 +83,20 @@ export const dataProcess = createSlice({
       .addCase(fetchReviewsAction.rejected, (state) => {
         state.reviews = [];
       })
-      .addCase(addNewReviewAction.fulfilled, (state) => {
+      .addCase(addNewReviewAction.pending, (state) => {
+        state.isOffersChanged = true;
+        state.isNewReviewPosted = false;
+      })
+      .addCase(addNewReviewAction.fulfilled, (state, action) => {
         state.isNewReviewPosted = true;
+        state.isOffersChanged = false;
+        state.reviews.push(action.payload);
       })
       .addCase(addNewReviewAction.rejected, (state) => {
         state.isNewReviewPosted = false;
+        state.isOffersChanged = false;
       });
   }
 });
+
+export const {setOfferChangedStatus, setNewReviewPostedStatus} = dataProcess.actions;

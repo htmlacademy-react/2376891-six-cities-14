@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import MainPage from '../../pages/main-page/main-page';
@@ -10,12 +13,9 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import ProtectedRoute from '../protected-route/protected-route';
 import LoadingPage from '../../pages/loading-screen/loading-screen';
 import ErrorPage from '../../pages/error-page/error-page';
-import HistoryRouter from '../history-route/history-route';
-import browserHistory from '../../browser-history';
 import { getAuthorizationStatus, getAuthCheckedStatus } from '../../store/user-process/selectors';
 import { getOffersLoadingStatus, getErrorStatus } from '../../store/data-process/selectors';
 import { checkAuthAction, fetchOffersAction, fetchFavoritesAction } from '../../store/api-actions';
-import { useEffect } from 'react';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -62,6 +62,7 @@ function App(): JSX.Element {
             element={
               <ProtectedRoute
                 authorizationStatus={authorizationStatus}
+                requiredStatus={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Root}
               >
                 <LoginPage />
@@ -70,7 +71,15 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Favorites}
-            element={<FavoritesPage />}
+            element={
+              <ProtectedRoute
+                authorizationStatus={authorizationStatus}
+                requiredStatus={AuthorizationStatus.Auth}
+                redirectTo={AppRoute.Login}
+              >
+                <FavoritesPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path={`${AppRoute.Offer}/:id`}

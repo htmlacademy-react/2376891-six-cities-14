@@ -19,10 +19,6 @@ function MainPage(): JSX.Element | null {
     offersByCity = offers.filter((offer) => offer.city.name === activeCity);
   }
 
-  if (offers.length === 0) {
-    return null;
-  }
-
   return (
     <div className="page page--gray page--main">
       <Helmet>

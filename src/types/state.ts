@@ -23,7 +23,7 @@ export type TDataProcess = {
 }
 
 export type TAppProcess = {
-  activeCity: string | null;
+  activeCity: string;
   offer: TOffer | null;
   nearPlaces: TOffers;
   reviews: TReviews;

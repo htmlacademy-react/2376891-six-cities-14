@@ -21,7 +21,7 @@ const currentCustomIcon = new Icon({
 });
 
 function Map({ offers, selectedOffer, location, block }: TMapProps): JSX.Element {
-  const viewLocation = selectedOffer ? selectedOffer.location : location;
+  const viewLocation = selectedOffer ? selectedOffer.city.location : location;
   const mapRef = useRef(null);
 
   const map = useMap(mapRef, location);
