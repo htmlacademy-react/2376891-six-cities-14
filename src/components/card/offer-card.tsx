@@ -74,7 +74,7 @@ function OfferCard({ offer, onCardMouseEnter, onCardMouseLeave, block }: TOfferP
           </div>
         ) : ''}
       <div className={`${block}__image-wrapper place-card__image-wrapper`} >
-        <Link to='#'>
+        <Link to={`${AppRoute.Offer}/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
         </Link>
       </div>

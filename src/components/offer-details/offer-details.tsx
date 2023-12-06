@@ -1,4 +1,4 @@
-import { Fragment, MouseEvent, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TOffer, TOffers } from '../../types/offer';
 import { OFFER_IMAGES_COUNT, AuthorizationStatus, AppRoute } from '../../const';
@@ -27,7 +27,15 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
     } else {
-      const newFavoritesOffers: TOffers = favoritesOffers.filter((favoritesOffer) => favoritesOffer.id !== offer.id);
+      let newFavoritesOffers: TOffers = structuredClone(favoritesOffers);
+
+      if (isOfferFavorite) {
+        newFavoritesOffers = favoritesOffers.filter((favoritesOffer) => favoritesOffer.id !== offer.id);
+      } else {
+        const newOffer: TOffer = structuredClone(offer);
+        newOffer.isFavorite = !isOfferFavorite;
+        newFavoritesOffers.push(newOffer);
+      }
       dispatch(changeOfferFavoriteStatus({
         id: id,
         favoriteStatus: Number(!isOfferFavorite),
@@ -40,7 +48,7 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
   };
 
   return (
-    <Fragment>
+    <>
       <div className="offer__gallery-container container">
         <div className="offer__gallery">
           {images.slice(0, OFFER_IMAGES_COUNT).map((image) => (
@@ -123,7 +131,7 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
           <ReviewsList />
         </div>
       </div>
-    </Fragment>
+    </>
   );
 }
 
