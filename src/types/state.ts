@@ -20,14 +20,15 @@ export type TDataProcess = {
   isOfferLoading: boolean;
   hasError: boolean;
   isOffersChanged: boolean;
+  isOfferChanged: boolean;
 }
 
 export type TAppProcess = {
   activeCity: string;
   offer: TOffer | null;
-  nearPlaces: TOffers;
   reviews: TReviews;
   sortType: string | null;
+  offersByCity: TOffers;
 }
 
 export type TState = ReturnType<typeof store.getState>;

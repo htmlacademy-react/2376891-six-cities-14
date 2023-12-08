@@ -2,11 +2,12 @@ import { MouseEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { capitalize, getRatingWidth } from '../../utils/common';
-import { TOffer, TOffers } from '../../types/offer';
+import { TOffers, TOffer } from '../../types/offer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeOfferFavoriteStatus } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { getFavorites, getOffers } from '../../store/data-process/selectors';
+import { setOfferChangedStatus } from '../../store/data-process/data-process';
 
 type TOfferProps = {
   offer: TOffer;
@@ -58,6 +59,8 @@ function OfferCard({ offer, onCardMouseEnter, onCardMouseLeave, block }: TOfferP
           newOffers: newOffers,
         }
       }));
+
+      dispatch(setOfferChangedStatus(true));
     }
   };
 

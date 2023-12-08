@@ -8,7 +8,7 @@ function Logo(): JSX.Element {
   const dispatch = useAppDispatch();
   const isOffersChange = useAppSelector(getOffersChangedStatus);
 
-  const handleCityClick = () => {
+  const handleCitiesLogoClick = () => {
     if (isOffersChange) {
       dispatch(fetchOffersAction());
     }
@@ -17,7 +17,7 @@ function Logo(): JSX.Element {
   return (
     <div className="header__left">
       <Link to={AppRoute.Root} className="header__logo-link header__logo-link--active">
-        <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" onClick={handleCityClick} />
+        <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" onClick={handleCitiesLogoClick} />
       </Link>
     </div>
   );

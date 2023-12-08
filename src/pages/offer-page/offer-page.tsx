@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { MAX_NEAR_PLACES_COUNT } from '../../const';
+import { MAX_NEAR_PLACES_COUNT, citiesMap } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFoundPage from '../not-found-page/not-found-page';
 import OfferDetails from '../../components/offer-details/offer-details';
@@ -10,8 +10,10 @@ import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import LoadingPage from '../loading-screen/loading-screen';
 import { dropOffer } from '../../store/app-process/app-process';
-import { getOfferLoadingStatus, getOffer, getNearPlaces } from '../../store/data-process/selectors';
+import { getOfferLoadingStatus, getOffer, getOffersChangedStatus, getNearPlaces } from '../../store/data-process/selectors';
 import { fetchOfferAction, fetchNearPlacesAction, fetchReviewsAction } from '../../store/api-actions';
+import { setOfferChangedStatus } from '../../store/data-process/data-process';
+import { getActiveCity } from '../../store/app-process/selectors';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
@@ -20,7 +22,21 @@ function OfferPage(): JSX.Element {
   const isOfferLoading = useAppSelector(getOfferLoadingStatus);
   const offer = useAppSelector(getOffer);
   const nearPlaces = useAppSelector(getNearPlaces);
-  const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_COUNT);
+  const isOffersChanged = useAppSelector(getOffersChangedStatus);
+  const activeCity = useAppSelector(getActiveCity);
+  let location = citiesMap.find((city) => city.name === activeCity)?.location;
+
+  if (!location) {
+    location = citiesMap[0].location;
+  }
+
+  const nearPlacesToRender = structuredClone(nearPlaces)
+    .filter((nearPlace) => nearPlace.id !== id)
+    .slice(0, MAX_NEAR_PLACES_COUNT);
+
+  if (isOffersChanged) {
+    dispatch(setOfferChangedStatus(false));
+  }
 
   useEffect(() => {
     if (id) {
@@ -53,7 +69,7 @@ function OfferPage(): JSX.Element {
       <main className="page__main page__main--offer">
         <section className="offer">
           <OfferDetails offer={offer} />
-          <Map offers={nearOffersForMap} selectedOffer={offer} location={offer.city.location} block='offer' />
+          <Map offers={nearOffersForMap} selectedOffer={offer} location={location} block='offer' />
         </section>
         <div className="container">
           <section className="near-places places">

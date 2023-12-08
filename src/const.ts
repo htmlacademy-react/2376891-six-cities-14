@@ -38,7 +38,7 @@ export const SortingOption = {
 
 export enum APIRoute {
   Offers = '/offers',
-  Offer = '/offers/',
+  Offer = '/offer',
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments/',

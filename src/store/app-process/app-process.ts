@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace, DEFAULT_CITY, SortingOption } from '../../const';
 import { TAppProcess } from '../../types/state';
+import { TOffers } from '../../types/offer';
 
 const initialState: TAppProcess = {
   activeCity: DEFAULT_CITY,
   offer: null,
-  nearPlaces: [],
   reviews: [],
   sortType: SortingOption.Popular,
+  offersByCity: [],
 };
 
 export const appProcess = createSlice({
@@ -19,13 +20,15 @@ export const appProcess = createSlice({
     },
     dropOffer: (state) => {
       state.offer = null;
-      state.nearPlaces = [];
       state.reviews = [];
     },
     setSortType: (state, action: PayloadAction<string | null>) => {
       state.sortType = action.payload;
     },
+    setOffersByCity: (state, action: PayloadAction<TOffers>) => {
+      state.offersByCity = action.payload;
+    }
   },
 });
 
-export const {setActiveCity, dropOffer, setSortType} = appProcess.actions;
+export const {setActiveCity, dropOffer, setSortType, setOffersByCity} = appProcess.actions;

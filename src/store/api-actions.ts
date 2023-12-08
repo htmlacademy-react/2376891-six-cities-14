@@ -16,7 +16,7 @@ type TExtra = {
 export const fetchOffersAction = createAsyncThunk<TOffers, undefined, TExtra>(
   'data/fetchOffers',
   async (_arg, { extra: api }) => {
-    const { data } = await api.get<TOffers>(APIRoute.Offer);
+    const { data } = await api.get<TOffers>(APIRoute.Offers);
     return data;
   },
 );
@@ -24,7 +24,7 @@ export const fetchOffersAction = createAsyncThunk<TOffers, undefined, TExtra>(
 export const fetchOfferAction = createAsyncThunk<TOffer, TOffer['id'], TExtra>(
   'data/fetchOffer',
   async (offerId, { extra: api }) => {
-    const { data } = await api.get<TOffer>(`${APIRoute.Offer}${offerId}`);
+    const { data } = await api.get<TOffer>(`${APIRoute.Offers}/${offerId}`);
     return data;
   },
 );
@@ -32,7 +32,7 @@ export const fetchOfferAction = createAsyncThunk<TOffer, TOffer['id'], TExtra>(
 export const fetchNearPlacesAction = createAsyncThunk<TOffers, TOffer['id'], TExtra>(
   'data/fetchNearPlaces',
   async (offerId, { extra: api }) => {
-    const { data } = await api.get<TOffers>(`${APIRoute.Offer}${offerId}/nearby`);
+    const { data } = await api.get<TOffers>(`${APIRoute.Offers}/${offerId}/nearby`);
     return data;
   },
 );
@@ -47,13 +47,13 @@ export const fetchFavoritesAction = createAsyncThunk<TOffers, undefined, TExtra>
 
 export const changeOfferFavoriteStatus = createAsyncThunk<{
   newFavoritesOffers: TOffers;
-  newOffers?: TOffers;
+  newOffers: TOffers;
 }, {
   id: TOffer['id'];
   favoriteStatus: number;
   newData: {
     newFavoritesOffers: TOffers;
-    newOffers?: TOffers;
+    newOffers: TOffers;
   };
 }, TExtra>(
   'data/addOfferFavoriteStatus',
