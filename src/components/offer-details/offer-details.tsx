@@ -6,8 +6,9 @@ import { getRatingWidth, capitalize, addPluralEnding } from '../../utils/common'
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import ReviewsList from '../reviews-list/reviews-list';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
-import { getFavorites } from '../../store/data-process/selectors';
+import { getFavorites, getOffers } from '../../store/data-process/selectors';
 import { changeOfferFavoriteStatus } from '../../store/api-actions';
+import { setOfferChangedStatus } from '../../store/data-process/data-process';
 
 type TOfferDetailsProps = {
   offer: TOffer;
@@ -20,6 +21,7 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
   const navigate = useNavigate();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const favoritesOffers = useAppSelector(getFavorites);
+  const offers = useAppSelector(getOffers);
   const [isOfferFavorite, setOfferFavoriteStatus] = useState<boolean>(isFavorite);
 
   const handleFavoriteClick = (evt: MouseEvent<HTMLOrSVGElement>) => {
@@ -27,6 +29,7 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
     } else {
+      let newOffers: TOffers = structuredClone(offers);
       let newFavoritesOffers: TOffers = structuredClone(favoritesOffers);
 
       if (isOfferFavorite) {
@@ -36,14 +39,27 @@ function OfferDetails({ offer }: TOfferDetailsProps): JSX.Element {
         newOffer.isFavorite = !isOfferFavorite;
         newFavoritesOffers.push(newOffer);
       }
+
+      newOffers = newOffers.reduce((newArr: TOffers, offersItem) => {
+        if (offersItem.id !== id) {
+          newArr.push(offersItem);
+        } else {
+          offersItem.isFavorite = !isFavorite;
+          newArr.push(offersItem);
+        }
+        return newArr;
+      }, []);
+
       dispatch(changeOfferFavoriteStatus({
         id: id,
         favoriteStatus: Number(!isOfferFavorite),
         newData: {
           newFavoritesOffers: newFavoritesOffers,
+          newOffers: newOffers,
         }
       }));
       setOfferFavoriteStatus(!isOfferFavorite);
+      dispatch(setOfferChangedStatus(true));
     }
   };
 

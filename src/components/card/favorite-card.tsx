@@ -4,7 +4,8 @@ import { TOffer, TOffers } from '../../types/offer';
 import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeOfferFavoriteStatus } from '../../store/api-actions';
-import { getFavorites } from '../../store/data-process/selectors';
+import { getFavorites, getOffers } from '../../store/data-process/selectors';
+import { setOfferChangedStatus } from '../../store/data-process/data-process';
 
 type TFavoriteCardProps = {
   offer: TOffer;
@@ -13,19 +14,34 @@ type TFavoriteCardProps = {
 function FavoriteCard({ offer }: TFavoriteCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const { price, isPremium, previewImage, title, type, id, isFavorite } = offer;
+  const offers = useAppSelector(getOffers);
   const favoritesOffers = useAppSelector(getFavorites);
 
   const handleFavoriteClick = (evt: MouseEvent<HTMLOrSVGElement>) => {
     evt.preventDefault();
     const newFavoritesOffers: TOffers = favoritesOffers.filter((favoritesOffer) => favoritesOffer.id !== offer.id);
+    let newOffers: TOffers = structuredClone(offers);
+
+    newOffers = newOffers.reduce((newArr: TOffers, offersItem) => {
+      if (offersItem.id !== id) {
+        newArr.push(offersItem);
+      } else {
+        offersItem.isFavorite = !isFavorite;
+        newArr.push(offersItem);
+      }
+      return newArr;
+    }, []);
 
     dispatch(changeOfferFavoriteStatus({
       id: id,
       favoriteStatus: Number(!isFavorite),
       newData: {
         newFavoritesOffers: newFavoritesOffers,
+        newOffers: newOffers,
       }
     }));
+
+    dispatch(setOfferChangedStatus(true));
   };
 
   return (
@@ -58,7 +74,7 @@ function FavoriteCard({ offer }: TFavoriteCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to="#">{title}</Link>
+          <Link to={`${AppRoute.Offer}/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

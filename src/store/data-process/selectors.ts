@@ -13,3 +13,4 @@ export const getOffersLoadingStatus = (state: TState): boolean => state[NameSpac
 export const getOfferLoadingStatus = (state: TState): boolean => state[NameSpace.Data].isOfferLoading;
 export const getErrorStatus = (state: TState): boolean => state[NameSpace.Data].hasError;
 export const getOffersChangedStatus = (state: TState): boolean => state[NameSpace.Data].isOffersChanged;
+export const getOfferChangedStatus = (state: TState): boolean => state[NameSpace.Data].isOfferChanged;

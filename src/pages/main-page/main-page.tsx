@@ -3,12 +3,14 @@ import Header from '../../components/header/header';
 import Cities from '../../components/cities/cities';
 import CityNamesList from '../../components/city-names-list/city-names-list';
 import NoCities from '../../components/no-cities/no-cities';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getActiveCity } from '../../store/app-process/selectors';
 import { getOffers } from '../../store/data-process/selectors';
 import { TOffers } from '../../types/offer';
+import { setOffersByCity } from '../../store/app-process/app-process';
 
 function MainPage(): JSX.Element | null {
+  const dispatch = useAppDispatch();
   const activeCity = useAppSelector(getActiveCity);
   const offers = useAppSelector(getOffers);
   const isNoOffers = (offers.length === 0);
@@ -17,6 +19,7 @@ function MainPage(): JSX.Element | null {
 
   if (!isNoOffers) {
     offersByCity = offers.filter((offer) => offer.city.name === activeCity);
+    dispatch(setOffersByCity(offersByCity));
   }
 
   return (

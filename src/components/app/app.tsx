@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -27,11 +27,11 @@ function App(): JSX.Element {
   useEffect(() => {
     if (!isAuthChecked) {
       dispatch(checkAuthAction());
-      dispatch(fetchOffersAction());
     }
   }, []);
 
   useEffect(() => {
+    dispatch(fetchOffersAction());
     if (authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(fetchFavoritesAction());
     }

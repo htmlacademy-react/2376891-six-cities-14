@@ -5,14 +5,14 @@ import { useFormData } from '../../hooks/use-form-data';
 import RatingItem from '../rating-item/rating-item';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import { addNewReviewAction } from '../../store/api-actions';
-import { getOffer, getNewReviewPostingStatus, getOffersChangedStatus } from '../../store/data-process/selectors';
+import { getOffer, getNewReviewPostingStatus, getOfferChangedStatus } from '../../store/data-process/selectors';
 import { setNewReviewPostedStatus } from '../../store/data-process/data-process';
 
 function ReviewForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const currentOffer = useAppSelector(getOffer);
   const isNewReviewPosted = useAppSelector(getNewReviewPostingStatus);
-  const isOfferChangedStatus = useAppSelector(getOffersChangedStatus);
+  const isOfferChangedStatus = useAppSelector(getOfferChangedStatus);
   const ratings = Object.entries(Rating).reverse();
 
   const [formData, handleFormDataChange] = useFormData();

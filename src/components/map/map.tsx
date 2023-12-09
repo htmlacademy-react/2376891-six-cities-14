@@ -1,9 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
 import { TOffer } from '../../types/offer';
-import { memo } from 'react';
 
 type TMapProps = {
   offers: TOffer[];
@@ -21,16 +20,14 @@ const currentCustomIcon = new Icon({
 });
 
 function Map({ offers, selectedOffer, location, block }: TMapProps): JSX.Element {
-  const viewLocation = selectedOffer ? selectedOffer.city.location : location;
   const mapRef = useRef(null);
-
   const map = useMap(mapRef, location);
 
   useEffect(() => {
     if (map) {
-      map.setView([viewLocation.latitude, viewLocation.longitude], viewLocation.zoom);
+      map.setView([location.latitude, location.longitude], location.zoom);
     }
-  }, [map, viewLocation]);
+  }, [map, location]);
 
   useEffect(() => {
     if (map) {

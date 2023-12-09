@@ -22,6 +22,7 @@ const initialState: TDataProcess = {
   isOfferLoading: false,
   hasError: false,
   isOffersChanged: false,
+  isOfferChanged: false,
 };
 
 export const dataProcess = createSlice({
@@ -44,6 +45,7 @@ export const dataProcess = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.isOffersLoading = false;
+        state.isOffersChanged = false;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.offers = [];
@@ -84,17 +86,17 @@ export const dataProcess = createSlice({
         state.reviews = [];
       })
       .addCase(addNewReviewAction.pending, (state) => {
-        state.isOffersChanged = true;
+        state.isOfferChanged = true;
         state.isNewReviewPosted = false;
       })
       .addCase(addNewReviewAction.fulfilled, (state, action) => {
         state.isNewReviewPosted = true;
-        state.isOffersChanged = false;
+        state.isOfferChanged = false;
         state.reviews.push(action.payload);
       })
       .addCase(addNewReviewAction.rejected, (state) => {
         state.isNewReviewPosted = false;
-        state.isOffersChanged = false;
+        state.isOfferChanged = false;
       });
   }
 });
